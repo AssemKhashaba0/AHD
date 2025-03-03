@@ -1,0 +1,182 @@
+﻿@{
+    ViewData["Title"] = "اختر المنتجات";
+}
+
+<style>
+    /* تنسيق عام */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    .container-fluid {
+        padding: 0 20px;
+    }
+
+    /* تنسيق بطاقات المنتجات */
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        background-color: #fff;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card img {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-card .card-body {
+            padding: 20px;
+        }
+
+        .product-card .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .product-card .card-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .product-card .price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .product-card .quantity-control {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+            .product-card .quantity-control button {
+                background-color: #3498db;
+                border: none;
+                color: #fff;
+                font-size: 1rem;
+                padding: 5px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+                .product-card .quantity-control button:hover {
+                    background-color: #2980b9;
+                }
+
+            .product-card .quantity-control input {
+                width: 50px;
+                text-align: center;
+                margin: 0 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 5px;
+            }
+
+        .product-card .btn-add-to-cart {
+            background-color: #27ae60;
+            border: none;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .product-card .btn-add-to-cart:hover {
+                background-color: #219150;
+            }
+
+        .product-card .btn-disabled {
+            background-color: #e74c3c;
+            cursor: not-allowed;
+        }
+
+    /* تنسيق متجاوب */
+    @@media (max-width: 768px) {
+        .col-md-4 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+</style>
+
+<div class="container-fluid mt-5">
+    <h2 class="mb-4 text-center">المنتجات المتاحة</h2>
+    <div class="row">
+        @foreach (var product in ViewBag.Products)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card product-card shadow-sm">
+                    <div class="image-container">
+                        <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">الكمية المتاحة: @product.Stock</p>
+                        <p class="price">السعر: @product.Price ريال</p>
+                        <form method="post" action="@Url.Action("AddToCart", "Selection")">
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <input type="hidden" name="cityId" value="@ViewBag.CityId" />
+                            <input type="hidden" name="mosqueId" value="@(ViewBag.MosqueId ?? "")" />
+                            <input type="hidden" name="cemeteryId" value="@(ViewBag.CemeteryId ?? "")" />
+
+                            @if (product.Stock < 1)
+                            {
+                                <button type="button" class="btn-add-to-cart btn-disabled" disabled>لا يوجد منتجات</button>
+                            }
+                            else
+                            {
+                                <div class="quantity-control">
+                                    <button type="button" onclick="decreaseQuantity(this)">-</button>
+                                    <input type="number" name="count" value="1" min="1" max="@product.Stock" readonly>
+                                    <button type="button" onclick="increaseQuantity(this)">+</button>
+                                </div>
+                                <button type="submit" class="btn-add-to-cart">إضافة إلى السلة</button>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function increaseQuantity(button) {
+        const input = button.parentElement.querySelector('input');
+        if (parseInt(input.value) < parseInt(input.max)) {
+            input.value = parseInt(input.value) + 1;
+        }
+    }
+
+    function decreaseQuantity(button) {
+        const input = button.parentElement.querySelector('input');
+        if (parseInt(input.value) > parseInt(input.min)) {
+            input.value = parseInt(input.value) - 1;
+        }
+    }
+</script>

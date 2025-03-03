@@ -1,0 +1,258 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Models
+@using Utility
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - لوحة التحكم</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="~/css/LoadingSpinner.css" rel="stylesheet" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #eef7fa;
+        }
+
+        header {
+            background-color: #0077b6;
+            color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            header .logo {
+                max-height: 50px;
+            }
+
+            header .nav-links a {
+                color: #fff;
+                text-decoration: none;
+                margin-right: 15px;
+                transition: color 0.3s ease-in-out;
+            }
+
+                header .nav-links a:hover {
+                    color: #90e0ef;
+                }
+
+            header .menu-icon {
+                display: none;
+                font-size: 24px;
+                cursor: pointer;
+            }
+
+        .wrapper {
+            display: flex;
+            margin-top: 80px;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: calc(100vh - 80px);
+            background-color: #00b4d8;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            right: 0;
+            top: 80px;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+        }
+
+            .sidebar h4 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .sidebar a {
+                color: white;
+                text-decoration: none;
+                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+
+                .sidebar a i {
+                    min-width: 20px;
+                }
+
+                .sidebar a:hover, .sidebar .active {
+                    background-color: #0077b6;
+                }
+
+        .content {
+            flex-grow: 1;
+            margin-right: 250px;
+            padding: 20px;
+            background-color: #eef7fa;
+            transition: margin-right 0.3s ease-in-out;
+        }
+
+        .user-role-info {
+            background-color: #0077b6;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @@media (max-width: 768px) {
+            header .menu-icon {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(100%);
+            }
+
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+
+            .content {
+                margin-right: 0;
+            }
+
+            .sidebar.open + .content {
+                margin-right: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="~/Logo/Log.png" alt="شعار الموقع" class="logo">
+        <div class="nav-links">
+            <a href="/selection/ChooseType">الرئيسية</a>
+        </div>
+        <div class="menu-icon" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <nav class="sidebar" id="sidebar">
+            <h4>لوحة التحكم</h4>
+
+            <!-- عرض دور المستخدم -->
+            <div class="user-role-info">
+                @if (User.IsInRole(SD.AdminRoles))
+                {
+                    <p>أنت مسجل كمدير.</p>
+                }
+                else if (User.IsInRole(SD.SubAdminRoles))
+                {
+                    <p>أنت مسجل كمساعد مدير.</p>
+                }
+                else if (User.IsInRole(SD.DAgentRoles))
+                {
+                    <p>أنت مسجل كموصل طلبات.</p>
+                }
+                else
+                {
+                    <p>أنت مسجل كمستخدم عادي.</p>
+                }
+            </div>
+
+            @if (User.IsInRole(SD.AdminRoles))
+            {
+                <!-- روابط خاصة بمدير النظام -->
+                <a href="/Dashboard/Welcome" class="active"><i class="fas fa-water"></i>الرئيسية</a>
+                <a href="/Dashboard/index" class="active"><i class="fas fa-water"></i> نظرة عامه</a>
+                <a class="active" href="/City/index"><i class="fas fa-city"></i> إدارة المدن</a>
+                <a class="active" href="/Cemetery/index"><i class="fas fa-monument"></i> إدارة المقابر</a>
+                <a class="active" href="/Mosque/index"><i class="fas fa-mosque"></i> إدارة المساجد</a>
+                <a class="active" href="/product/index"><i class="fas fa-box-open"></i> إدارة المنتجات</a>
+                <a class="active" href="/User/index"><i class="fas fa-users"></i> إدارة المستخدمين</a>
+                <a class="active" href="/User/ManageRoles"><i class="fas fa-clipboard-list"></i> ادارة صلاحيات المستخدمين </a>
+                <a class="active" href="/Order/AdminOrders"><i class="fas fa-clipboard-list"></i> كل الطلبات</a>
+                <a class="active" href="/Order/Last24HoursOrders"><i class="fas fa-clock"></i> طلبات 24 ساعة</a>
+                <a class="active" href="/Order/NewOrders"><i class="fas fa-plus-circle"></i> طلبات جديدة</a>
+                <a class="active" href="/Order/ProcessingOrders"><i class="fas fa-spinner"></i> طلبات تم معالجتها</a>
+                <a class="active" href="/Order/OnTheWayOrders"><i class="fas fa-truck"></i> طلبات في الطريق</a>
+                <a class="active" href="/Order/DeliveredOrders"><i class="fas fa-check-circle"></i> طلبات تم التوصيل</a>
+                <a class="active" href="/Order/CanceledOrders"><i class="fas fa-ban"></i> طلبات ملغاة</a>
+                <a class="active" href="/Order/PaymentDetails"><i class="fas fa-wallet"></i> إدارة المدفوعات</a>
+                <a class="active" href="/product/Inventory"><i class="fas fa-warehouse"></i> إدارة المخزون</a>
+            }
+            else if (User.IsInRole(SD.SubAdminRoles))
+            {
+                <!-- روابط خاصة بمساعد المدير -->
+                <a href="/Dashboard/Welcome" class="active"><i class="fas fa-water"></i>الرئيسية</a>
+                <a class="active" href="/City/index"><i class="fas fa-city"></i> إدارة المدن</a>
+                <a class="active" href="/Cemetery/index"><i class="fas fa-monument"></i> إدارة المقابر</a>
+                <a class="active" href="/Mosque/index"><i class="fas fa-mosque"></i> إدارة المساجد</a>
+                <a class="active" href="/product/index"><i class="fas fa-box-open"></i> إدارة المنتجات</a>
+                <a class="active" href="/Order/AdminOrders"><i class="fas fa-clipboard-list"></i> كل الطلبات</a>
+                <a class="active" href="/Order/Last24HoursOrders"><i class="fas fa-clock"></i> طلبات 24 ساعة</a>
+                <a class="active" href="/Order/NewOrders"><i class="fas fa-plus-circle"></i> طلبات جديدة</a>
+                <a class="active" href="/Order/ProcessingOrders"><i class="fas fa-spinner"></i> طلبات تم معالجتها</a>
+                <a class="active" href="/Order/OnTheWayOrders"><i class="fas fa-truck"></i> طلبات في الطريق</a>
+                <a class="active" href="/Order/DeliveredOrders"><i class="fas fa-check-circle"></i> طلبات تم التوصيل</a>
+                <a class="active" href="/Order/CanceledOrders"><i class="fas fa-ban"></i> طلبات ملغاة</a>
+                <a class="active" href="/Order/PaymentDetails"><i class="fas fa-wallet"></i> إدارة المدفوعات</a>
+                <a class="active" href="/product/Inventory"><i class="fas fa-warehouse"></i> إدارة المخزون</a>
+            }
+            else if (User.IsInRole(SD.DAgentRoles))
+            {
+                <!-- روابط خاصة بموصل الطلبات -->
+                <a href="/Dashboard/Welcome" class="active"><i class="fas fa-water"></i>الرئيسية</a>
+                <a class="active" href="/Order/DeliveryManOrders"><i class="fas fa-clipboard-list"></i> طلباتي</a>
+                <a class="active" href="/Order/DeliveryManOrderStatus"><i class="fas fa-truck"></i> حالة الطلبات</a>
+            }
+            else
+            {
+                <!-- روابط خاصة بالمستخدم العادي -->
+                <a href="/Dashboard/Welcome" class="active"><i class="fas fa-water"></i>الرئيسية</a>
+                <a class="active" href="/Order/MyOrders"><i class="fas fa-clipboard-list"></i> طلباتي</a>
+            }
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="btn btn-danger w-100">
+                    <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                </button>
+            </form>
+        </nav>
+
+        <div class="content">
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+    </script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

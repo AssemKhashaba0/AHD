@@ -1,0 +1,21 @@
+﻿@model Models.Order
+
+<div>
+    <h3>تفاصيل الطلب</h3>
+    <p>رقم الطلب: @Model.Id</p>
+    <p>حالة الطلب: @Model.OrderStatus</p>
+    <p>طريقة الدفع: @Model.PaymentMethod</p>
+    <p>المجموع: @Model.TotalPrice</p>
+
+    @if (Model.DeliveryLocation != null)
+    {
+        <h4>تفاصيل العنوان</h4>
+        <p>المدينة: @Model.DeliveryLocation.City</p>
+        <p>العنوان: @Model.DeliveryLocation.Address</p>
+        <p>رقم الهاتف: @Model.DeliveryLocation.PhoneNumber</p>
+    }
+    else
+    {
+        <p>تفاصيل العنوان غير متوفرة.</p>
+    }
+</div>

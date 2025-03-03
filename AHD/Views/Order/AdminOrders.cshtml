@@ -1,0 +1,213 @@
+﻿@using Models
+@{
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4 fw-bold text-primary">إدارة الطلبات</h2>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered text-center shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>المستخدم</th>
+                    <th>المسجد/المقبرة</th>
+                    <th>الإجمالي</th>
+                    <th>طريقة الدفع</th>
+                    <th>الحالة</th>
+                    <th>إجراءات</th>
+                    <th>تفاصيل العنوان</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td><strong>@order.Id</strong></td>
+                        <td>
+                            @if (order.User != null)
+                            {
+                                @order.User.UserName
+                            }
+                            else
+                            {
+                                <span class="text-danger">غير متاح</span>
+                            }
+                        </td>
+                        <td>
+                            @if (order.Mosque != null)
+                            {
+                                @order.Mosque.Name
+                            }
+                            else if (order.Cemetery != null)
+                            {
+                                @order.Cemetery.Name
+                            }
+                            else
+                            {
+                                <span class="text-danger">غير متاح</span>
+                            }
+                        </td>
+                        <td class="fw-bold text-success">@order.TotalPrice.ToString("C")</td>
+                        <td>
+                            @if (order.DeliveryManId != null)
+                            {
+                                <span class="badge bg-success p-2"><i class="fas fa-check-circle"></i> تم التعيين بنجاح</span>
+                            }
+                            else
+                            {
+                                <a class="btn btn-info btn-sm" asp-action="AssignDeliveryMan" asp-route-orderId="@order.Id">تعيين موصل طلبات</a>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge @(order.PaymentMethod == PaymentMethodEnum.OnDelivery ? "bg-warning text-dark" : "bg-info")">
+                                @order.PaymentMethod
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge
+                                @(order.OrderStatus == OrderStatusEnum.Completed ? "bg-success" :
+                                  order.OrderStatus == OrderStatusEnum.InProgress ? "bg-primary" :
+                                  order.OrderStatus == OrderStatusEnum.Canceled ? "bg-danger" : "bg-secondary")">
+                                @order.OrderStatus
+                            </span>
+                        </td>
+                        <td class="d-flex justify-content-center gap-2">
+                            <form method="post" asp-action="UpdateOrderStatus">
+                                <input type="hidden" name="orderId" value="@order.Id" />
+                                <div class="input-group">
+                                    <select name="status" class="form-select form-select-sm">
+                                        @foreach (var status in Enum.GetValues(typeof(OrderStatusEnum)))
+                                        {
+                                            <option value="@status" selected="@(order.OrderStatus == (OrderStatusEnum)status)">
+                                                @status
+                                            </option>
+                                        }
+                                    </select>
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-sync-alt"></i> تحديث
+                                    </button>
+                                </div>
+                            </form>
+
+                            @if (order.OrderStatus == OrderStatusEnum.Completed)
+                            {
+                                <span class="badge bg-success p-2"><i class="fas fa-check-circle"></i> تم الدفع</span>
+                            }
+                            else if (order.PaymentMethod == PaymentMethodEnum.OnDelivery && order.OrderStatus == OrderStatusEnum.InProgress)
+                            {
+                                <form method="post" asp-action="ConfirmPayment">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="fas fa-check-circle"></i> تم الدفع
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailsModal-@order.Id">
+                                <i class="fas fa-info-circle"></i> عرض التفاصيل
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@foreach (var order in Model)
+{
+    <div class="modal fade" id="orderDetailsModal-@order.Id" tabindex="-1" aria-labelledby="orderDetailsModalLabel-@order.Id" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="orderDetailsModalLabel-@order.Id">تفاصيل الطلب #@order.Id</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <h6>تفاصيل المستخدم:</h6>
+                        @if (order.User != null)
+                        {
+                            <p><strong>اسم المستخدم:</strong> @order.User.UserName</p>
+                            <p><strong>البريد الإلكتروني:</strong> @order.User.Email</p>
+                        }
+                        else
+                        {
+                            <p class="text-danger">لا توجد بيانات مستخدم متاحة.</p>
+                        }
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <h6>تفاصيل العنوان:</h6>
+                        @if (order.DeliveryLocation != null)
+                        {
+                            <p><strong>المدينة:</strong> @order.DeliveryLocation.City</p>
+                            <p><strong>العنوان:</strong> @order.DeliveryLocation.Address</p>
+                            <p><strong>الشارع:</strong> @order.DeliveryLocation.Street</p>
+                            <p><strong>تفاصيل إضافية:</strong> @order.DeliveryLocation.AdditionalDetails</p>
+                            <p><strong>رقم الهاتف:</strong> @order.DeliveryLocation.PhoneNumber</p>
+                            @if (!string.IsNullOrEmpty(order.DeliveryLocation.LocationLink))
+                            {
+                                <p><strong>رابط الموقع:</strong> <a href="@order.DeliveryLocation.LocationLink" target="_blank">فتح الخريطة</a></p>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-danger">لا توجد بيانات عنوان متاحة.</p>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .modal-content {
+        border-radius: 10px;
+    }
+
+    .modal-header {
+        border-bottom: none;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .badge {
+        font-size: 0.9em;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .text-success {
+        color: #28a745;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .input-group {
+        width: auto;
+    }
+
+    .form-select-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+</style>

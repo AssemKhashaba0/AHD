@@ -1,0 +1,44 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access denied";
+}
+
+
+    <style>
+       
+        .access-denied-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h1 {
+            font-size: 4rem;
+            font-weight: bold;
+        }
+        p {
+            font-size: 1.2rem;
+        }
+        .btn-home {
+            background-color: #ff4757;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-home:hover {
+            background-color: #e84118;
+            transform: translateY(-3px);
+        }
+    </style>
+
+    <div class="access-denied-card">
+        <h1>403</h1>
+        <h2>تم رفض الوصول</h2>
+        <p>ليس لديك الإذن للوصول إلى هذا المورد.</p>
+        <a href="/" class="btn btn-home">العودة للصفحة الرئيسية</a>
+    </div>

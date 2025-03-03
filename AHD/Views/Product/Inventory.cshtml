@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+    ViewData["Title"] = "إدارة المخزون";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-warehouse text-primary"></i> إدارة المخزون</h2>
+        <a asp-controller="Product" asp-action="Create" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> إضافة منتج جديد
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-list-alt"></i> قائمة المنتجات
+        </div>
+        <div class="card-body p-4">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th><i class="fas fa-box"></i> اسم المنتج</th>
+                        <th><i class="fas fa-layer-group"></i> المخزون الحالي</th>
+                        <th><i class="fas fa-edit"></i> تحديث المخزون</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model)
+                    {
+                        <tr>
+                            <td>@product.Name</td>
+                            <td>
+                                @if (product.Stock == 0)
+                                {
+                                    <span class="badge bg-danger">نفد من المخزون</span>
+                                }
+                                else if (product.Stock > 20)
+                                {
+                                    <span class="badge bg-success">متوفر: @product.Stock</span>
+                                }
+                                else if (product.Stock >= 10)
+                                {
+                                    <span class="badge bg-warning text-dark">متوسط: @product.Stock</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">منخفض: @product.Stock</span>
+                                }
+                            </td>
+
+                            <td>
+                                <form asp-action="UpdateInventory" method="post" class="d-flex align-items-center">
+                                    <input type="hidden" name="id" value="@product.Id" />
+                                    <input type="number" name="quantity" class="form-control me-2" min="0" value="@product.Stock" style="max-width: 100px;" />
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="fas fa-sync-alt"></i> تحديث
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success mt-3">
+            <i class="fas fa-check-circle"></i> @TempData["success"]
+        </div>
+    }
+</div>

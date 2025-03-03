@@ -1,0 +1,73 @@
+﻿        body {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .construction-container {
+            max-width: 600px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .construction-icon {
+            font-size: 90px;
+            color: #ffc107;
+            margin-bottom: 20px;
+            animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 100%
+
+        {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+
+        }
+
+        .gear-icon {
+            font-size: 40px;
+            color: #17a2b8;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            animation: rotate 4s linear infinite;
+        }
+        @keyframes rotate {
+            from
+
+        {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+
+        }
+
+        .btn-custom {
+            background: #ff9800;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 18px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+            .btn-custom:hover {
+                background: #e68900;
+                transform: scale(1.05);
+            }

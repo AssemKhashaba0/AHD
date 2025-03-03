@@ -1,0 +1,62 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <link rel="stylesheet" href="~/css/loginstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <form id="account" method="post" class="login-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="input-container">
+                <input asp-for="Input.Email" type="email" placeholder="الايميل" required autocomplete="username" aria-required="true">
+                <i class="fa-solid fa-envelope"></i>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="input-container">
+                <input asp-for="Input.Password" type="password" placeholder="الباسورد" required autocomplete="current-password" aria-required="true">
+                <i class="fa-solid fa-lock"></i>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="checkbox-container">
+                <label asp-for="Input.RememberMe" class="remember-me-label">
+                    <input class="form-check-input" asp-for="Input.RememberMe">
+                    تذكرني
+                </label>
+            </div>
+
+            <a id="forgot-password" asp-page="./ForgotPassword" class="forgot-password">هل نسيت الباسورد؟</a>
+
+            <button id="login-submit" type="submit" class="login-button">
+                <i class="fa-solid fa-sign-in-alt"></i> دخول
+            </button>
+
+            <div class="links">
+                <p><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="link">إنشاء حساب جديد</a></p>
+                <p><a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="link">إعادة إرسال تأكيد البريد</a></p>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

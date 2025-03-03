@@ -1,0 +1,22 @@
+﻿@model Models.Order
+@{
+    ViewData["Title"] = "تعيين موصل الطلبات";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h2>تعيين موصل الطلبات للطلب رقم @ViewBag.OrderId</h2>
+
+<form asp-action="AssignDeliveryMan" method="post">
+    <input type="hidden" name="orderId" value="@ViewBag.OrderId" />
+    <div class="form-group">
+        <label>اختر موصل الطلبات:</label>
+        <select name="deliveryManId" class="form-control">
+            @foreach (var user in ViewBag.DeliveryMen)
+            {
+                <option value="@user.Id">@user.UserName</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">تعيين</button>
+</form>

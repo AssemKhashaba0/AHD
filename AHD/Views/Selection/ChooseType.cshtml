@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "اختيار النوع";
+}
+<link rel="stylesheet" href="~/css/ChooseType.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<style>
+main{
+        padding-top: 108px;
+    }
+</style>
+<div class="slider-container">
+    <div class="slides">
+        <div class="slide"><img src="@Url.Content("~/slides/slides1.jpg")" alt="مساجد"></div>
+        <div class="slide"><img src="@Url.Content("~/slides/slides2.jpg")" alt="مقابر"></div>
+        <div class="slide"><img src="@Url.Content("~/slides/slides3.jpg")" alt="توصيل"></div>
+    </div>
+    <div class="slider-indicators"></div>
+</div>
+
+<div class="grid">
+    <a href="@Url.Action("SelectLocation", "Selection", new { selectionType = "mosque" })" class="grid-item">
+        <i class="fa-solid fa-mosque"></i>
+        <h3>المساجد</h3>
+        <p>اطلب إلى المساجد الآن</p>
+    </a>
+    <a href="@Url.Action("SelectLocation", "Selection", new { selectionType = "cemetery" })" class="grid-item">
+        <i class="fas fa-monument"></i>      <h3>المقابر</h3>
+        <p>اطلب إلى المقابر الآن</p>
+    </a>
+    <a href="/underconstruction/underconstruction" class="grid-item">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <h3>طلبات الجملة</h3>
+        <p>اطلب كميات كبيرة بسهولة</p>
+    </a>
+    <a href="/underconstruction/underconstruction" class="grid-item">
+        <i class="fa-solid fa-house-user"></i>
+        <h3>المنازل</h3>
+        <p>اطلب التوصيل إلى المنزل</p>
+    </a>
+</div>
+<script>
+    let index = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const indicatorsContainer = document.querySelector('.slider-indicators');
+
+    function createIndicators() {
+        slides.forEach((_, i) => {
+            let indicator = document.createElement('span');
+            indicator.classList.add('indicator');
+            indicator.addEventListener('click', () => showSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        });
+        updateIndicators();
+    }
+
+    function updateIndicators() {
+        document.querySelectorAll('.indicator').forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+
+    function showSlide(n) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        index = (n >= totalSlides) ? 0 : (n < 0 ? totalSlides - 1 : n);
+        slides[index].classList.add('active');
+        updateIndicators();
+    }
+
+    setInterval(() => showSlide(index + 1), 4000); // التبديل التلقائي كل 4 ثواني
+    createIndicators();
+</script>

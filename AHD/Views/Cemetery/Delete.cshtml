@@ -1,0 +1,12 @@
+﻿@model Models.Cemetery
+@{
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+<h2>حذف المقبرة</h2>
+<p>هل أنت متأكد من أنك تريد حذف المقبرة "@Model.Name"؟</p>
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">حذف</button>
+    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+</form>

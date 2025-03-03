@@ -1,0 +1,21 @@
+﻿@using Models
+@model City
+@{
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-danger text-white text-center">
+            <h3>حذف مدينة</h3>
+        </div>
+        <div class="card-body text-center">
+            <p class="fs-5">هل أنت متأكد من حذف المدينة: <strong>@Model.Name</strong>؟</p>
+            <form method="post" action="@Url.Action("DeleteConfirmed", new { id = Model.Id })">
+                <button type="submit" class="btn btn-danger me-2"><i class="bi bi-trash"></i> نعم، احذف</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> إلغاء</a>
+            </form>
+        </div>
+    </div>
+</div>
+

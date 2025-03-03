@@ -1,0 +1,49 @@
+﻿@model List<Models.Order>
+
+@{
+    ViewData["Title"] = "الطلبات الملغاة";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h2 class="text-center my-4">الطلبات الملغاة</h2>
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>#</th>
+            <th>المستخدم</th>
+            <th>المسجد / المقبرة</th>
+            <th>نوع الطلب</th>
+            <th>طريقة الدفع</th>
+            <th>السعر الإجمالي</th>
+            <th>تاريخ الإنشاء</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var order in Model.Select((value, index) => new { value, index }))
+            {
+                <tr>
+                    <td>@(order.index + 1)</td>
+                    <td>@order.value.User.Name</td>
+                    <td>
+                        @(order.value.Mosque != null ? order.value.Mosque.Name : order.value.Cemetery?.Name ?? "-")
+                    </td>
+                    <td>@order.value.OrderType.ToString()</td>
+                    <td>@order.value.PaymentMethod.ToString()</td>
+                    <td>@order.value.TotalPrice.ToString("C")</td>
+                    <td>@order.value.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                   
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center text-danger">لا توجد طلبات ملغاة</td>
+            </tr>
+        }
+    </tbody>
+</table>

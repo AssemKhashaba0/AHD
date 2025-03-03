@@ -1,0 +1,168 @@
+﻿@using Models
+@model Order
+
+@{
+    ViewData["Title"] = "تفاصيل الطلب";
+
+    var statusSteps = new Dictionary<OrderStatusEnum, string>
+    {
+        { OrderStatusEnum.New, "جديد" },
+        { OrderStatusEnum.InProgress, "قيد المعالجة" },
+        { OrderStatusEnum.InTheWay, "في الطريق" },
+        { OrderStatusEnum.Completed, "مكتمل" },
+        { OrderStatusEnum.Canceled, "ملغي" }
+    };
+}
+
+<h2 class="mb-4 text-center">تفاصيل الطلب #@Model.Id</h2>
+
+<!-- 🔵 خطوات الطلب -->
+<div class="progress-container">
+    @foreach (var step in statusSteps)
+    {
+        <div class="progress-step @(Model.OrderStatus == step.Key ? "active" : (Model.OrderStatus > step.Key ? "completed" : ""))">
+            <span class="step-label">@step.Value</span>
+        </div>
+    }
+</div>
+
+<!-- 🔵 تفاصيل الطلب -->
+<div class="card mt-4 shadow-sm">
+    <div class="card-body">
+        <table class="table table-striped">
+            <tr>
+                <th><i class="fas fa-mosque"></i> اسم المسجد / المقبرة</th>
+                <td>@(Model.Mosque?.Name ?? Model.Cemetery?.Name ?? "-")</td>
+            </tr>
+            <tr>
+                <th><i class="fas fa-money-bill-wave"></i> طريقة الدفع</th>
+                <td>@Model.PaymentMethod</td>
+            </tr>
+            <tr>
+                <th><i class="fas fa-dollar-sign"></i> إجمالي السعر</th>
+                <td>@Model.TotalPrice.ToString("C")</td>
+            </tr>
+            <tr>
+                <th><i class="fas fa-info-circle"></i> الحالة</th>
+                <td>
+                    <span class="badge @(GetStatusClass(Model.OrderStatus))">
+                        @GetStatusText(Model.OrderStatus)
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- ✅ تحسينات CSS -->
+<style>
+    /* 🔵 تنسيق شريط تقدم الحالة */
+    .progress-container {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .progress-step {
+        position: relative;
+        text-align: center;
+        flex: 1;
+        font-weight: bold;
+        color: #777;
+        padding: 10px 0;
+    }
+
+        .progress-step::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 4px;
+            background: #ddd;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+
+        .progress-step:first-child::before {
+            display: none;
+        }
+
+        .progress-step.completed::after {
+            content: "✔";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            color: white;
+            background: green;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .progress-step.active::after {
+            content: "⏳";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            color: white;
+            background: orange;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .progress-step.completed {
+            color: white;
+            background: green;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .progress-step.active {
+            color: white;
+            background: orange;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+    .step-label {
+        display: block;
+        margin-top: 10px;
+    }
+</style>
+
+@functions {
+    string GetStatusClass(OrderStatusEnum status)
+    {
+        return status switch
+        {
+            OrderStatusEnum.New => "bg-primary",
+            OrderStatusEnum.InProgress => "bg-warning",
+            OrderStatusEnum.InTheWay => "bg-info",
+            OrderStatusEnum.Completed => "bg-success",
+            OrderStatusEnum.Canceled => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusText(OrderStatusEnum status)
+    {
+        return status switch
+        {
+            OrderStatusEnum.New => "جديد",
+            OrderStatusEnum.InProgress => "قيد المعالجة",
+            OrderStatusEnum.InTheWay => "في الطريق",
+            OrderStatusEnum.Completed => "مكتمل",
+            OrderStatusEnum.Canceled => "ملغي",
+            _ => "غير معروف"
+        };
+    }
+}

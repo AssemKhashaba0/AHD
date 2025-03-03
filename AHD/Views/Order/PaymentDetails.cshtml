@@ -1,0 +1,96 @@
+﻿@model List<Models.Payment>
+
+@{
+    ViewData["Title"] = "تفاصيل المدفوعات";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+    // استرجاع القيم المرسلة من الكونترولر
+    var paymentStatus = Context.Request.Query["paymentStatus"].ToString();
+    var paymentMethod = Context.Request.Query["paymentMethod"].ToString();
+    var fromDate = Context.Request.Query["fromDate"].ToString();
+    var toDate = Context.Request.Query["toDate"].ToString();
+}
+
+<h2 class="text-center my-4">تفاصيل المدفوعات</h2>
+
+<form method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label>حالة الدفع</label>
+            <select name="paymentStatus" class="form-select">
+                <option value="">الكل</option>
+                <option value="successful" selected="@(paymentStatus == "successful" ? "selected" : null)">مدفوع</option>
+                <option value="failed" selected="@(paymentStatus == "failed" ? "selected" : null)">فشل</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>طريقة الدفع</label>
+            <select name="paymentMethod" class="form-select">
+                <option value="">الكل</option>
+                <option value="cash" selected="@(paymentMethod == "cash" ? "selected" : null)">نقدي</option>
+                <option value="on_delivery" selected="@(paymentMethod == "on_delivery" ? "selected" : null)">عند الاستلام</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>من تاريخ</label>
+            <input type="date" name="fromDate" class="form-control" value="@fromDate" />
+        </div>
+        <div class="col-md-3">
+            <label>إلى تاريخ</label>
+            <input type="date" name="toDate" class="form-control" value="@toDate" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">تصفية</button>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>رقم الدفع</th>
+            <th>رقم الطلب</th>
+            <th>اسم المستخدم</th>
+            <th>المبلغ</th>
+            <th>حالة الدفع</th>
+            <th>طريقة الدفع</th>
+            <th>تاريخ المعاملة</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.Id</td>
+                <td>@payment.OrderId</td>
+                <td>@payment.User?.UserName</td>
+                <td>@payment.Amount.ToString("C")</td>
+                <td>
+                    @if (payment.PaymentStatus.ToLower() == "successful")
+                    {
+                        <span class="badge bg-success">مدفوع</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">فشل</span>
+                    }
+                </td>
+                <td>
+                    @if (payment.PaymentMethod.ToLower() == "cash")
+                    {
+                        <span class="badge bg-info text-dark">نقدي</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">عند الاستلام</span>
+                    }
+                </td>
+                <td>@payment.TransactionDate.ToString("yyyy/MM/dd HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">
+        <p>لا توجد مدفوعات تطابق معايير التصفية.</p>
+    </div>
+}

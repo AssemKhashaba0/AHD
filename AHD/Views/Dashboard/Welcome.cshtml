@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "أهلاً بك";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .welcome-container {
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .welcome-icon {
+            font-size: 8rem;
+            color: #0077b6;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .welcome-title {
+            font-size: 3rem;
+            color: #333;
+            animation: slideIn 1.5s ease-in-out;
+            margin-bottom: 10px;
+        }
+
+        .welcome-message {
+            font-size: 1.5rem;
+            color: #555;
+            margin-top: 20px;
+            animation: slideIn 2s ease-in-out;
+        }
+
+        .welcome-button {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #0077b6;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: fadeIn 3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            .welcome-button:hover {
+                background-color: #005f8a;
+                transform: translateY(-5px);
+            }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <i class="fas fa-user-astronaut welcome-icon"></i> <!-- أيقونة من Font Awesome -->
+        <h1 class="welcome-title">أهلاً بك في لوحة التحكم!</h1>
+        <p class="welcome-message">نحن سعداء برؤيتك هنا. يمكنك البدء في استكشاف الأدوات المتاحة.</p>
+    </div>
+</body>
+</html>

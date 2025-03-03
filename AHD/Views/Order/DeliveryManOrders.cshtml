@@ -1,0 +1,180 @@
+﻿@using Models
+@model List<Models.Order>
+
+@{
+    ViewData["Title"] = "طلبات موصل الطلبات";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+}
+
+<h2 class="mb-4 text-center"><i class="fas fa-truck"></i> طلبات موصل الطلبات</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th><i class="fas fa-user"></i> المستخدم</th>
+                    <th><i class="fas fa-mosque"></i> المسجد / المقبرة</th>
+                    <th><i class="fas fa-info-circle"></i> حالة الطلب</th>
+                    <th><i class="fas fa-calendar-alt"></i> تاريخ الإنشاء</th>
+                    <th><i class="fas fa-map-marker-alt"></i> العنوان</th>
+                    <th><i class="fas fa-tools"></i> إجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.User?.UserName</td>
+                        <td>
+                            @(order.Mosque?.Name ?? order.Cemetery?.Name ?? "-")
+                        </td>
+                        <td>
+                            <span class="badge @GetStatusClass(order.OrderStatus)">
+                                @GetStatusText(order.OrderStatus)
+                            </span>
+                        </td>
+                        <td>@order.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            @if (order.DeliveryLocation != null)
+                            {
+                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#addressModal-@order.Id">
+                                    <i class="fas fa-eye"></i> عرض العنوان
+                                </button>
+                            }
+                            else
+                            {
+                                <span class="text-muted">لا يوجد عنوان</span>
+                            }
+                        </td>
+                        <td>
+                            @if (order.OrderStatus != OrderStatusEnum.Completed && order.OrderStatus != OrderStatusEnum.Canceled)
+                            {
+                                <form asp-action="UpdateOrderStatus" method="post" class="d-flex align-items-center">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <select name="status" class="form-select form-select-sm me-2 status-dropdown">
+                                        <option value="@OrderStatusEnum.Completed">مكتمل</option>
+                                        <option value="@OrderStatusEnum.Canceled">ملغي</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary btn-sm">تحديث</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-muted">تم التحديث</span>
+                            }
+                        </td>
+                    </tr>
+
+                    <!-- Modal لعرض العنوان -->
+                    @if (order.DeliveryLocation != null)
+                    {
+                        <div class="modal fade" id="addressModal-@order.Id" tabindex="-1" aria-labelledby="addressModalLabel-@order.Id" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addressModalLabel-@order.Id">تفاصيل العنوان</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>المدينة:</strong> @order.DeliveryLocation.City</p>
+                                        <p><strong>العنوان:</strong> @order.DeliveryLocation.Address</p>
+                                        <p><strong>الشارع:</strong> @order.DeliveryLocation.Street</p>
+                                        <p><strong>رقم الهاتف:</strong> @order.DeliveryLocation.PhoneNumber</p>
+                                        @if (!string.IsNullOrEmpty(order.DeliveryLocation.LocationLink))
+                                        {
+                                            <p>
+                                                <strong>رابط الموقع:</strong>
+                                                <a href="@order.DeliveryLocation.LocationLink" target="_blank">فتح في الخريطة</a>
+                                            </p>
+                                        }
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ✅ تحسينات CSS -->
+<style>
+    .badge {
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 8px;
+    }
+
+    .status-dropdown {
+        min-width: 120px;
+    }
+
+    .modal-content {
+        border-radius: 10px;
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .modal-title {
+        font-weight: bold;
+    }
+
+    .modal-body p {
+        margin-bottom: 10px;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+    }
+</style>
+
+<!-- ✅ إضافة مكتبة Select2 لتحسين اختيار الحالة -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".status-dropdown").select2({
+            width: 'auto',
+            minimumResultsForSearch: Infinity
+        });
+    });
+</script>
+
+@functions {
+    string GetStatusClass(OrderStatusEnum status)
+    {
+        return status switch
+        {
+            OrderStatusEnum.New => "bg-primary",
+            OrderStatusEnum.InProgress => "bg-warning",
+            OrderStatusEnum.InTheWay => "bg-info",
+            OrderStatusEnum.Completed => "bg-success",
+            OrderStatusEnum.Canceled => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusText(OrderStatusEnum status)
+    {
+        return status switch
+        {
+            OrderStatusEnum.New => "جديد",
+            OrderStatusEnum.InProgress => "قيد المعالجة",
+            OrderStatusEnum.InTheWay => "في الطريق",
+            OrderStatusEnum.Completed => "مكتمل",
+            OrderStatusEnum.Canceled => "ملغي",
+            _ => "غير معروف"
+        };
+    }
+}

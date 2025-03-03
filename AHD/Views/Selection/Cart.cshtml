@@ -1,0 +1,139 @@
+﻿@model List<Models.Cart>
+
+@{
+    ViewData["Title"] = "سلة المشتريات";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">سلة المشتريات</h2>
+
+    <!-- عرض رسائل الخطأ من TempData -->
+    @if (TempData["error"] != null)
+    {
+        <div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- عرض رسائل النجاح من TempData -->
+    @if (TempData["success"] != null)
+    {
+        <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning text-center">السلة فارغة</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>المدينة</th>
+                        <th>الموقع</th>
+                        <th>المنتج</th>
+                        <th>الصورة</th>
+                        <th>الكمية</th>
+                        <th>السعر</th>
+                        <th>الإجمالي</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@(item.City?.Name ?? "غير متوفر")</td>
+                            <td>
+                                @if (item.MosqueId != null && item.Mosque != null)
+                                {
+                                    <span class="badge bg-primary">مسجد</span> @item.Mosque.Name
+                                }
+                                else if (item.CemeteryId != null && item.Cemetery != null)
+                                {
+                                    <span class="badge bg-danger">مقبرة</span> @item.Cemetery.Name
+                                }
+                                else
+                                {
+                                    <span class="text-muted">غير محدد</span>
+                                }
+                            </td>
+                            <td>@(item.Product?.Name ?? "غير متوفر")</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.Product?.ImageUrl))
+                                {
+                                    <img src="@item.Product.ImageUrl" alt="صورة المنتج" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;" />
+                                }
+                                else
+                                {
+                                    <span>لا توجد صورة</span>
+                                }
+                            </td>
+                            <td>
+                                <form asp-action="UpdateCart" method="post" class="d-flex align-items-center justify-content-center">
+                                    <input type="hidden" name="cartId" value="@item.Id" />
+                                    <button type="submit" name="count" value="@(item.Count - 1)" class="btn btn-sm btn-outline-danger" @(item.Count <= 1 ? "disabled" : "")>-</button>
+                                    <input type="text" value="@item.Count" class="form-control text-center mx-2" style="width: 50px;" readonly />
+                                    <button type="submit" name="count" value="@(item.Count + 1)" class="btn btn-sm btn-outline-success">+</button>
+                                </form>
+                            </td>
+                            <td>@(item.Product != null ? item.Product.Price.ToString("C") : "غير متوفر")</td>
+                            <td>@(item.Product != null ? (item.Product.Price * item.Count).ToString("C") : "غير متوفر")</td>
+                            <td>
+                                <form asp-action="RemoveFromCart" method="post">
+                                    <input type="hidden" name="cartId" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end mt-4 p-3 bg-light border rounded">
+            <h4 class="fw-bold">الإجمالي: @ViewBag.TotalPrice.ToString("C")</h4>
+
+            <form asp-action="Checkout" asp-controller="Order" method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">طريقة الدفع:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="PaymentMethod" value="Cash" id="payCash" checked>
+                        <label class="form-check-label" for="payCash">الدفع عبر كاش (Stripe)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="PaymentMethod" value="OnDelivery" id="payOnDelivery">
+                        <label class="form-check-label" for="payOnDelivery">الدفع عند الاستلام</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2">إتمام الطلب</button>
+            </form>
+        </div>
+    }
+</div>
+
+<!-- JavaScript لإخفاء الرسائل تلقائيًا بعد 5 ثوانٍ -->
+<script>
+    // إخفاء رسالة الخطأ بعد 5 ثوانٍ
+    setTimeout(function () {
+        var errorAlert = document.getElementById('errorAlert');
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
+        }
+    }, 5000); // 5000 مللي ثانية = 5 ثوانٍ
+
+    // إخفاء رسالة النجاح بعد 5 ثوانٍ
+    setTimeout(function () {
+        var successAlert = document.getElementById('successAlert');
+        if (successAlert) {
+            successAlert.style.display = 'none';
+        }
+    }, 5000); // 5000 مللي ثانية = 5 ثوانٍ
+</script>

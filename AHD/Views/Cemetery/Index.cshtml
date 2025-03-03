@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Models.Cemetery>
+
+@{
+    ViewData["Title"] = "المقابر";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h2>قائمة المقابر</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">إضافة مقبرة جديدة</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>الاسم</th>
+            <th>المدينة</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cemetery in Model)
+        {
+            <tr id="row-@cemetery.Id">
+                <td>@cemetery.Name</td>
+                <td>@cemetery.City.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@cemetery.Id" class="btn btn-warning">تعديل</a>
+                    <button class="btn btn-danger delete-btn" data-id="@cemetery.Id">حذف</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form id="deleteForm">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".delete-btn").click(function () {
+                var cemeteryId = $(this).data("id");
+                var row = $("#row-" + cemeteryId);
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                if (confirm("هل أنت متأكد من حذف هذه المقبرة؟")) {
+                    $.ajax({
+                        url: "/Cemetery/DeleteConfirmed",
+                        type: "POST",
+                        data: { id: cemeteryId, __RequestVerificationToken: token },
+                        success: function (response) {
+                            if (response.success) {
+                                row.fadeOut(500, function () { $(this).remove(); });
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function () {
+                            alert("حدث خطأ أثناء الحذف، يرجى المحاولة لاحقًا.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

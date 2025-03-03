@@ -1,0 +1,199 @@
+﻿@using Utility.ViewModel
+@model DashboardViewModel
+@{
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+}
+
+<!-- إضافة مكتبة Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* ملف CSS مخصص */
+    .dashboard-card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card-text {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .chart-container {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .list-group-item {
+        border: none;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+</style>
+
+<div class="container-fluid">
+    <h1 class="mb-4">لوحة التحكم</h1>
+
+  @*   <!-- رسمة إحصائية -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="chart-container">
+                <h5 class="card-title mb-4">توزيع الطلبات حسب الحالة</h5>
+                <canvas id="ordersChart"></canvas>
+            </div>
+        </div>
+    </div> *@
+
+    <!-- إحصائيات الطلبات -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">إجمالي الطلبات</h5>
+                    <p class="card-text">@Model.TotalOrders</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">طلبات جديدة</h5>
+                    <p class="card-text">@Model.NewOrders</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">طلبات قيد التنفيذ</h5>
+                    <p class="card-text">@Model.InProgressOrders</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">طلبات مكتملة</h5>
+                    <p class="card-text">@Model.CompletedOrders</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الإيرادات وطلبات آخر 24 ساعة -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <h5 class="card-title">إجمالي الإيرادات</h5>
+                    <p class="card-text text-success">@Model.TotalRevenue.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <h5 class="card-title">طلبات آخر 24 ساعة</h5>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var order in Model.Last24HoursOrders)
+                        {
+                            <li class="list-group-item">@order.Id - @order.CreatedAt.ToString("yyyy-MM-dd HH:mm")</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- طلبات حديثة ومدفوعات حديثة -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <h5 class="card-title">طلبات حديثة</h5>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var order in Model.RecentOrders)
+                        {
+                            <li class="list-group-item">@order.Id - @order.CreatedAt.ToString("yyyy-MM-dd HH:mm")</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <h5 class="card-title">مدفوعات حديثة</h5>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var payment in Model.RecentPayments)
+                        {
+                            <li class="list-group-item">@payment.Id - @payment.Amount.ToString("C")</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- رسمة إحصائية باستخدام Chart.js -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('ordersChart').getContext('2d');
+        const ordersChart = new Chart(ctx, {
+            type: 'doughnut', // نوع الرسمة (دونات)
+            data: {
+                labels: ['طلبات جديدة', 'طلبات قيد التنفيذ', 'طلبات مكتملة'],
+                datasets: [{
+                    label: 'عدد الطلبات',
+                    data: [@Model.NewOrders, @Model.InProgressOrders, @Model.CompletedOrders],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)', // لون الطلبات الجديدة
+                        'rgba(54, 162, 235, 0.8)', // لون الطلبات قيد التنفيذ
+                        'rgba(75, 192, 192, 0.8)' // لون الطلبات المكتملة
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom', // وضع وسيلة الإيضاح في الأسفل
+                    },
+                    title: {
+                        display: true,
+                        text: 'توزيع الطلبات حسب الحالة'
+                    }
+                }
+            }
+        });
+    });
+</script>

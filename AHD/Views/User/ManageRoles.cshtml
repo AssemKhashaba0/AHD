@@ -1,0 +1,46 @@
+﻿<h2>Manage User Roles</h2>
+@{
+    ViewData["Title"] = "Manage User Roles";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<input type="text" id="searchUser" class="form-control mb-3" placeholder="Search for a user..." />
+
+<form method="post" asp-action="AssignRole">
+    <div class="form-group">
+        <label for="userId">Select User:</label>
+        <select id="userId" name="userId" class="form-control">
+            @foreach (var user in Model.Users)
+            {
+                <option value="@user.UserId">@user.UserName (@user.Role)</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="roleName">Select Role:</label>
+        <select id="roleName" name="roleName" class="form-control">
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role">@role</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Assign Role</button>
+</form>
+
+<script>
+    document.getElementById('searchUser').addEventListener('input', function () {
+        let filter = this.value.toLowerCase();
+        let options = document.getElementById('userId').options;
+        for (let option of options) {
+            option.style.display = option.textContent.toLowerCase().includes(filter) ? "" : "none";
+        }
+    });
+</script>

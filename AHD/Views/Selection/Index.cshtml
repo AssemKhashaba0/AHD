@@ -1,0 +1,102 @@
+﻿<div class="container mt-4">
+    <h2 class="text-center">اختيار المساجد والمقابر</h2>
+
+    <div class="mb-3">
+        <label class="form-label">اختر المدينة</label>
+        <select id="citySelect" class="form-select">
+            <option value="">اختر مدينة</option>
+            @if (ViewBag.Cities != null)
+            {
+                foreach (var city in ViewBag.Cities)
+                {
+                    <option value="@city.Id">@city.Name</option>
+                }
+            }
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">اختر النوع</label>
+        <select id="typeSelect" class="form-select">
+            <option value="">اختر نوع</option>
+            <option value="mosque">مساجد</option>
+            <option value="cemetery">مقابر</option>
+        </select>
+    </div>
+
+    <div id="optionsContainer" class="mb-3" style="display:none;">
+        <div id="placesList" class="list-group"></div>
+        <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" id="otherOption">
+            <label class="form-check-label">أخرى (اختيار يدوي عبر الخريطة)</label>
+        </div>
+    </div>
+
+    <div id="map"></div>
+    <button id="nextButton" class="btn btn-primary mt-3" style="display:none;">التالي</button>
+</div>
+
+<script>
+    let selectedPlaces = [];
+    let map, marker;
+
+    $(document).ready(function() {
+        $('#typeSelect, #citySelect').change(function() {
+            loadPlaces();
+        });
+
+        $('#otherOption').change(function() {
+            if ($(this).is(':checked')) {
+                $('#map').show();
+                initMap();
+            } else {
+                $('#map').hide();
+            }
+        });
+    });
+
+    function loadPlaces() {
+        let cityId = $('#citySelect').val();
+        let type = $('#typeSelect').val();
+
+        if (!cityId || !type) return;
+
+        let url = type === 'mosque' ? '/Selection/GetMosques?cityId=' + cityId : '/Selection/GetCemeteries?cityId=' + cityId;
+
+        $.get(url, function(data) {
+            $('#placesList').empty();
+            data.forEach(place => {
+                let listItem = `<label class='list-group-item'><input type='checkbox' class='place-checkbox' value='${place.id}'> ${place.name}</label>`;
+                $('#placesList').append(listItem);
+            });
+            $('#optionsContainer').show();
+            $('.place-checkbox').change(updateSelection);
+        });
+    }
+
+    function updateSelection() {
+        selectedPlaces = $('.place-checkbox:checked').map(function() { return $(this).val(); }).get();
+        $('#nextButton').toggle(selectedPlaces.length > 0);
+        localStorage.setItem('selectedPlaces', JSON.stringify(selectedPlaces));
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 24.7136, lng: 46.6753 }, // الرياض كإفتراضي
+            zoom: 10
+        });
+
+        map.addListener('click', function(event) {
+            if (marker) marker.setMap(null);
+            marker = new google.maps.Marker({ position: event.latLng, map: map });
+            selectedPlaces.push({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+            localStorage.setItem('selectedPlaces', JSON.stringify(selectedPlaces));
+            $('#nextButton').show();
+        });
+    }
+
+    $('#nextButton').click(function() {
+        window.location.href = '/Products';
+    });
+</script>

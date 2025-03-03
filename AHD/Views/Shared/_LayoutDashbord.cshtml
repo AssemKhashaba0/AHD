@@ -1,0 +1,147 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="~/css/LoadingSpinner.css" rel="stylesheet" />
+    <style>
+        /* Reset and General Styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+
+        header .logo {
+            max-height: 50px;
+        }
+
+        header .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        header .nav-links a:hover {
+            color: #81c784;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 250px;
+            height: calc(100% - 80px);
+            background-color: #388e3c;
+            color: white;
+            padding-top: 20px;
+            padding-left: 15px;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar .logo {
+            max-width: 80%;
+            height: auto;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover, .sidebar .active {
+            background-color: #66bb6a;
+        }
+
+        /* Main Content Styling */
+        main {
+            margin-left: 7%;
+            padding: 20px;
+            padding-top: 8%;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="row align-items-center">
+            <div class="col-md-6 d-flex align-items-center">
+                <img src="~/Logo/logo.png" alt="Site Logo" class="logo">
+            </div>
+            <div class="col-md-6 text-right nav-links">
+                <a href="/">Home</a>
+            </div>
+        </header>
+
+        <div class="row">
+            <nav class="sidebar">
+                <div class="text-center">
+                   
+                    <h4>Admin Dashboard</h4>
+                </div>
+
+                <ul class="list-unstyled">
+                    <li><a href="/user/index1" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/user/index"><i class="fas fa-users"></i> User</a></li>
+                    <li><a href="/Roles/index"><i class="fas fa-user-shield"></i> Role</a></li>
+                    <li><a href="/Event/IndexAdmin"><i class="fas fa-calendar-alt"></i> Events</a></li>
+                    <li><a href="/SponsoredAdReport/index"><i class="fas fa-undo"></i> Sponsored Ads Report</a></li>
+                    <li><a href="/Categorie/index"><i class="fas fa-folder"></i> Category</a></li>
+                    <li class="nav-item">
+                        <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="btn btn-danger text-white">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+
+            <main>
+                <div class="container">
+                    <main role="main" class="pb-3" style="padding-top: 0px;">
+                        @RenderBody()
+                    </main>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AHD</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AHD.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body dir="rtl">
+    <!-- الهيدر العلوي -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light floating-navbar">
+            <div class="container">
+                <!-- الشعار -->
+                <a class="navbar-brand" href="#">
+                    <img src="~/Logo/Log.png" alt="AHD Logo" class="logo">
+                </a>
+
+                <!-- زر القائمة المنسدلة (يظهر فقط على الهاتف) -->
+                <button class="navbar-toggler" type="button" id="toggleSidebar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- القائمة العلوية (تظهر فقط على الكمبيوتر) -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">الرئيسية</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Dashboard/Welcome">لوحة التحكم</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Order/myorders">طلباتي</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- زر "حسابي" -->
+                <a href="start/start.html" class="btn btn-primary apply-btn d-none d-lg-inline-block">حسابي</a>
+
+                <!-- زر تسجيل الدخول -->
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+    </header>
+
+    <!-- البار الجانبي (يظهر فقط على الهاتف) -->
+    <aside class="sidebar" id="sidebar">
+        <button class="close-sidebar" id="closeSidebar">&times;</button>
+        <h2 class="text-center">القائمة</h2>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="#">الرئيسية</a></li>
+            <li class="nav-item"><a class="nav-link" href="/Dashboard/Welcome">لوحة التحكم</a></li>
+            <li class="nav-item"><a class="nav-link" href="/Order/myorders">طلباتي</a></li>
+            <li class="nav-item"><a class="nav-link" href="start/start.html">حسابي</a></li>
+        </ul>
+    </aside>
+
+    <!-- الوجو (Overlay) -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="container main-content">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container text-center">
+            <div class="footer-links">
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">معلومات عنا</a>
+                <a href="#">الأسئلة الشائعة</a>
+            </div>
+            <div class="footer-brand"><img src="~/img/ahdwhite-400x70.png" alt=""></div>
+            <p class="text-white mt-3">كل الحقوق محفوظة بواسطة مياه عهد © 2025 بنسل ستوديو</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // فتح/إغلاق البار الجانبي والوجو
+        document.getElementById('toggleSidebar').addEventListener('click', function () {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        });
+
+        // إغلاق البار الجانبي والوجو عند النقر خارج المنطقة
+        document.getElementById('overlay').addEventListener('click', function () {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+        });
+
+        // إغلاق البار الجانبي عند النقر على زر الإغلاق
+        document.getElementById('closeSidebar').addEventListener('click', function () {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

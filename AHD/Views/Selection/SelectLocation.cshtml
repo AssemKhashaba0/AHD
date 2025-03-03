@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "اختر المدينة";
+}
+
+<div class="container mt-5 text-center">
+    <h2 class="mb-4 text-primary">
+        <i class="fa-solid fa-city"></i> اختر مدينة لعرض
+        <span class="text-dark">@ViewBag.SelectionType</span>
+    </h2>
+
+    <div class="d-flex justify-content-center mb-4">
+        <select id="cityDropdown" class="form-select w-50" onchange="location.href='@Url.Action("SelectLocation", "Selection")?cityId=' + this.value + '&selectionType=@ViewBag.SelectionType'">
+            <option value="">اختر مدينة</option>
+            @foreach (var city in ViewBag.Cities)
+            {
+                <option value="@city.Id" selected="@(ViewBag.SelectedCityId == city.Id ? "selected" : null)">@city.Name</option>
+            }
+        </select>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-warning d-flex align-items-center justify-content-center">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+            @ViewBag.Message
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            @foreach (var item in (ViewBag.SelectionType == "mosque" ? ViewBag.Mosques : ViewBag.Cemeteries))
+            {
+                <div class="col-md-4 col-sm-6 mb-3">
+                    <a href="@Url.Action("SelectProducts", "Selection", new { mosqueId = item.Id, cityId = ViewBag.SelectedCityId })" class="card list-item text-decoration-none">
+                        <div class="card-body text-center">
+                            <i class="fa-solid @(ViewBag.SelectionType == "mosque" ? "fa-mosque" : "fa-tombstone") fa-2x text-primary"></i>
+                            <h5 class="mt-2 text-dark">@item.Name</h5>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .list-item {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .list-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+</style>

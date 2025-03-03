@@ -1,0 +1,369 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق عهد</title>
+    <!-- رابط Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- رابط ملف CSS الخاص -->
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light floating-navbar">
+        <div class="container">
+            <!-- اللوجو -->
+            <a class="navbar-brand" href="/">
+                <img src="~/img/ahdlogo-2048x360.png" alt="AHD Logo">
+            </a>
+
+            <!-- زر التبديل -->
+            <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- الروابط -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item active"><a class="nav-link" href="#">الرئيسية</a></li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Dashboard/Welcome">لوحة التحكم</a>
+                        </li>
+                    }
+                    <li class="nav-item"><a class="nav-link" href="#howask">طريقة الطلب</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#howWork">عن تطبيق عهد</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Selection/ChooseType">اختار طلبك</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pro">منتجاتنا</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#Login">تسجيل الدخول</a></li>
+                </ul>
+            </div>
+
+            <!-- زر حسابي -->
+            <div class="navbar-contact my-auto">
+                <a href="Start/Index" class="btn btn-primary apply-btn">حسابي</a>
+
+            </div>
+        </div>
+    </nav>
+    <!-- الخلفية -->
+    <div class="back-wrapper">
+        <div class="background-image">
+            <!-- شريط التنقل (Navbar) -->
+            <!-- القسم الرئيسي -->
+            <div class="container main-content">
+                <div class="row">
+
+
+                    <!-- القسم الأيمن (النص والكونتينر) -->
+                    <div class="col-md-6 right-section">
+                        <!-- العنوان والبراغراف -->
+                        <h1>مياه عهد ذات اعلي درجة من النقاء</h1>
+                        <p>أنقى وألذ المياه المنعشة المستخرجة من مصادر طبيعية، استمتع بها في يومك!</p>
+
+                        <!-- الكونتينر الأبيض -->
+                        <div class="white-container">
+                            <button class="btn btn-success">تتبع طلب</button>
+                            <input type="text" placeholder="طلبك" class="form-control">
+                            <input type="text" placeholder="عنوانك" class="form-control">
+                        </div>
+                    </div>
+                    <!-- القسم الأيسر (الصورة) -->
+                    <div class="col-md-6 left-section">
+                        <img src="~/img/water.png" alt="AHD Water" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+    <div class="container how-work" id="howWork">
+        <h1 class="my-4">كيف نعمل؟</h1>
+        <p class="mb-5">
+            نحن في شركة عهد ملتزمون بتقديم خدمة استثنائية تتجاوز توصيل المياه النقية. يتضمن التزامنا ما يلي:
+        </p>
+
+        <div class="row text-center mt-5">
+            <div class="col-md-4 mt-3">
+                <i class="fas fa-truck fa-3x text-primary mb-3"></i>
+                <h3>توصيل سريع</h3>
+                <p class="light">نضمن لك وصول المياه إلى مكانك في أسرع وقت.</p>
+            </div>
+            <div class="col-md-4 mt-3">
+                <i class="fas fa-hand-holding-water fa-3x text-success mb-3"></i>
+                <h3>جودة عالية</h3>
+                <p class="light">مياهنا مصفاة وفق أعلى المعايير لضمان نقائها.</p>
+            </div>
+            <div class="col-md-4 mt-3   ">
+                <i class="fas fa-phone-alt fa-3x text-danger mb-3"></i>
+                <h3>دعم متواصل</h3>
+                <p class="light">خدمة العملاء متاحة 24/7 لمساعدتك في أي وقت.</p>
+            </div>
+        </div>
+    </div>
+    <div class="contact-section">
+        <a href="#" class="order-button">قم بإجراء الطلب عن طريق الاتصال</a>
+        <div>
+            نحن نعمل على مدار الساعة طوال أيام الأسبوع، يمكنك الاتصال بنا في أي وقت
+            <strong>(050) 299 0666</strong>
+        </div>
+    </div>
+
+    <div class="how-ask">
+        <h1 class="" id="howask">طريقة الطلب</h1>
+        <div class="container">
+            <div class="row text-center mt-5">
+                <div class="col-md-3">
+                    <div class="step-card">
+                        <i class="fas fa-mosque fa-3x text-primary mb-3"></i>
+                        <h3 class="step-title">الخطوة الأولى</h3>
+                        <p class="light">اختر طلبك</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="step-card">
+                        <i class="fas fa-shopping-basket fa-3x text-primary mb-3"></i>
+                        <h3 class="step-title">الخطوة الثانية</h3>
+                        <p class="light">اختر الكمية</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="step-card">
+                        <i class="fas fa-hand-pointer fa-3x text-primary mb-3"></i>
+                        <h3 class="step-title">الخطوة الثالثة</h3>
+                        <p class="light">إرسال الطلب</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="step-card">
+                        <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                        <h3 class="step-title">الخطوة الرابعة</h3>
+                        <p class="light">انتظر طلبك</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="how-take">
+        <h2>سننقلك إلى تفاصيل منتجاتنا</h2>
+
+        <div class="products-container" id="pro">
+            <!-- المنتج الأول -->
+            <div class="product-card">
+                <h3 class="product-title">زجاجة مياه معدنية كبيرة</h3>
+                <p class="product-description">زجاجتنا كبيرة الحجم مثالية للبقاء رطبًا طوال اليوم.</p>
+                <a href="#" class="product-link">شاهد المزيد</a>
+                <div class="icons">
+                    <img src="~/img/take.png" alt="أيقونة">
+                </div>
+            </div>
+
+            <!-- المنتج الثاني -->
+            <div class="product-card">
+                <h3 class="product-title">زجاجة مياه معدنية صغيرة</h3>
+                <p class="product-description">زجاجة صغيرة الحجم مريحة وسهلة الحمل، مثالية أثناء التنقل.</p>
+                <a href="#" class="product-link">شاهد المزيد</a>
+                <div class="icons">
+                    <img src="~/img/take.png" alt="أيقونة">
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- <div class="delivery-section mt-5">
+
+            <div class="delivery-container">
+                <div>
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="delivery-content">
+                    <h3 class="my-2 mx-auto w-25 ">اطلب من مكانك
+                    </h3>
+                    <p class="w-50 m-auto">سنقدم لك أفضل طريقة واستمتع بخدمات توصيل المياه السريعة والموثوقة المصممة خصيصًا.                            .</p>
+                </div>
+                <img src="https://ahdwater.org/wp-content/uploads/2024/12/w-delivery-img-2-opt.jpg" alt="امرأة تشرب مياه" class="delivery-img2">
+            </div>
+
+
+
+            <div class="delivery-center">
+                <img src="https://ahdwater.org/wp-content/uploads/2024/12/w-delivery-img-2-opt.jpg" alt="زجاجة مياه" class="water-bottle">
+            </div>
+
+            <div class="delivery-item">
+                <img src="https://ahdwater.org/wp-content/uploads/2024/12/w-delivery-img-2-opt.jpg" alt="امرأة تشرب مياه" class="delivery-img">
+
+                <div class="delivery-content">
+                    <h3 class="my-2 mx-auto w-50 ">واو! إنه نقي حقًا</h3>
+                    <p class="w-50 m-auto">استمتع بتوفير المياه النقية سهلة التوصيل في كل رحلة.</p>
+                    <a href="#" class="order-button">اطلب الآن</a>
+                </div>
+                <div class="location-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+
+            </div>
+
+
+        </div> -->
+
+
+        <section class="water-section">
+            <div class="container con1">
+                <div class="item">
+                    <img src="~/img/carry-gallery-2-2.jpg" alt="قطرة ماء">
+
+                    <h2 class="title">يثق</h2>
+                    <p class="description">
+                        نحن نبني علاقات دائمة مع عملائنا من خلال الشفافية والموثوقية والاتساق، تتمتع شركة Ahd Water بالثقة لالتزامها الثابت بتقديم خدمات آمنة.
+                    </p>
+                </div>
+
+                <div class="item">
+                    <h2 class="title">جودة</h2>
+                    <p class="description">
+                        نلتزم كل خطوة من خطوات عملية الإنتاج لدينا، من التوريد إلى التعبئة، بأعلى المعايير الدولية لضمان حصول عملائنا على أجود أنواع المياه.
+                    </p>
+                    <img src="~/img/carry-gallery-2-5.jpg" alt="كوب ماء">
+                </div>
+
+                <div class="item">
+                    <img src="~/img/carry-gallery-2-1.jpg" alt="زجاجة تصب الماء">
+                    <h2 class="title">الاستدامة</h2>
+                    <p class="description">
+                        نحن نفهم بشدة بالبيئة ونلتزم بتبني الممارسات الصديقة للبيئة، من التعبئة والتغليف إلى الإنتاج، لحماية مواردنا الطبيعية.
+                    </p>
+
+                </div>
+
+                <div class="item">
+
+                    <h2 class="title">نقاء</h2>
+                    <p class="description">
+                        نحن ملتزمون بتقديم مياه نقية 100%، مصدرها محميات طبيعية، لضمان أن كل قطرة تعكس الوضوح والنضارة التي تمثلها علامتنا التجارية.
+                    </p>
+                    <img src="~/img/carry-gallery-2-3.jpg" alt="زجاجة ماء">
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- قسم الإحصائيات -->
+        <div class="stats-section">
+            <div class="row text-center">
+                <!-- الإحصائية الأولى -->
+                <div class="col-md-4">
+                    <h1 class="stat-number">1587</h1>
+                    <p class="stat-description">المزيد +</p>
+                    <p class="stat-subtext">الصالح والخبرن</p>
+                </div>
+                <!-- الإحصائية الثانية -->
+                <div class="col-md-4">
+                    <h1 class="stat-number">143</h1>
+                    <p class="stat-description">المزيد +</p>
+                    <p class="stat-subtext">التسليمات يوميا</p>
+                </div>
+                <!-- الإحصائية الثالثة -->
+                <div class="col-md-4">
+                    <h1 class="stat-number">24</h1>
+                    <p class="stat-description">ساعات</p>
+                    <p class="stat-subtext">التسليم خلال يوم</p>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <div class="back-wrapper1" id="Login">
+            <div class="background-image2">
+                <div class="container text-center">
+                    <p class="ppp">تجارتنا السريعة للمياه، الجيل القادم من النجاح</p>
+                    <p class="mmm">قم بتنزيل التطبيق واحصل على خصم 10٪ على طلبك الأول.</p>
+
+                    <!-- أزرار تسجيل الدخول والتسجيل -->
+                    <div class="button-container">
+                        <button class="btn-custom">تسجيل الدخول</button>
+                        <button class="btn-custom">إنشاء حساب</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="separator-section">
+            <div class="search-box">
+                <div class="search-content">
+                    <p class="search-text">هل لديك سؤال؟</p>
+                    <p class="search-subtext">يمكنك كتابة سؤالك هنا والحصول على إجابة سريعة</p>
+                    <div class="search-input">
+                        <input type="text" placeholder="اكتب سؤالك..." />
+                        <button>إرسال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer pt-5">
+            <div class="container pt-5">
+
+
+                <div class="footer-content pt-5">
+                    <div class="footer-links">
+                        <a href="#">سياسة الخصوصية</a>
+                        <a href="#">معلومات عنا</a>
+                        <a href="#">الأسئلة الشائعة</a>
+                    </div>
+
+                    <div class="footer-brand"><img src="~/img/ahdwhite-400x70.png" alt=""></div>
+
+                    <div class="footer-line"></div>
+
+
+
+
+                </div>
+
+                <div class="text-center mt-3">
+                    <p class="text-white">كل الحقوق محفوظة بواسطة مياه عهد  © 2025 بنسل ستوديو</p>
+                </div>
+            </div>
+        </footer>
+
+
+
+
+
+        <!-- روابط Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

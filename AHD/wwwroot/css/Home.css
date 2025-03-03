@@ -1,0 +1,979 @@
+﻿html, body {
+}
+
+.back-wrapper {
+    background: url('../Home/back.jpg');
+    background-size: cover;
+}
+
+.background-image {
+}
+
+/* تنسيق الناف بار الطافي */
+.floating-navbar {
+    position: absolute; /* لجعل الناف بار يطفو فوق الخلفية */
+    top: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 1200px;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 25px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between; /* لتوزيع العناصر بين الجانبين */
+    align-items: center;
+}
+
+/* تنسيق العلامة التجارية (Brand) */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-left: auto; /* لدفع العلامة التجارية إلى أقصى اليمين */
+}
+
+/* تنسيق قائمة الناف بار */
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* لدفع القائمة إلى اليمين */
+}
+
+.navbar-brand img {
+    height: 40px; /* تعديل ارتفاع الصورة */
+    width: auto; /* يحافظ على تناسب الأبعاد */
+}
+
+.navbar-nav .nav-item {
+    margin: 0 10px;
+}
+
+.navbar-nav .nav-link {
+    color: #06ACEA !important;
+    font-weight: bold;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: black !important;
+    }
+
+/* تنسيق زر "حسابي" على اليسار */
+.navbar-contact {
+    display: flex;
+    align-items: center;
+}
+
+    .navbar-contact .apply-btn {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .navbar-contact .apply-btn:hover {
+            background-color: #0056b3;
+        }
+
+/* تنسيق القسم الأيمن (اللوجو والروابط) */
+.navbar-right-section {
+    display: flex;
+    align-items: center;
+    width: 100%; /* لجعل القسم يأخذ العرض الكامل */
+    justify-content: flex-end; /* لدفع العناصر إلى اليمين */
+}
+
+
+.left-section img {
+    margin-top: 60px;
+    width: 100%;
+    height: 100vh; /* لجعل الصورة تأخذ ارتفاع الشاشة بالكامل */
+}
+
+/* تنسيق القسم الأيمن (النص والكونتينر) */
+.right-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 100vh; /* لجعل القسم يأخذ ارتفاع الشاشة بالكامل */
+}
+
+    .right-section h1 {
+        font-size: 58px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .right-section p {
+        font-size: 0.999rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+/* تنسيق الكونتينر الأبيض */
+.white-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+    width: 100%;
+    max-width: 500px; /* تحديد أقصى عرض للكونتينر */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* مسافة بين العناصر */
+}
+
+    /* جعل المدخلات تأخذ نفس الارتفاع وتكون متجاورة */
+    .white-container .form-control {
+        flex: 1; /* يجعل كل input يتمدد ليملأ المساحة */
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        padding: 0 auto;
+    }
+
+    /* زر الطلب */
+    .white-container .btn {
+        background-color: #007bff; /* اللون الأزرق */
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+        white-space: nowrap; /* يمنع كسر النص */
+    }
+
+
+/* تحسين استجابة الخلفية */
+.background-image {
+    background-size: cover;
+    background-position: center;
+}
+
+/* جعل الناف بار متجاوب */
+.floating-navbar {
+    width: 90%;
+    max-width: 1200px;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap; /* يسمح بتكدس العناصر عند تصغير الشاشة */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-right-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-toggler {
+    border: none;
+    outline: none;
+}
+
+.navbar-brand img {
+    height: 35px;
+}
+
+/* تحسين استجابة القائمة في الهواتف */
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .navbar-nav .nav-item {
+            width: 100%;
+            text-align: center;
+        }
+}
+
+/* تحسين استجابة القسم الرئيسي */
+.main-content {
+    margin-top: 80px;
+    padding: 0 20px;
+}
+
+/* جعل القسم الأيمن والنص متجاوب */
+.right-section {
+    text-align: center;
+}
+
+    .right-section h1 {
+        font-size: 2rem;
+    }
+
+    .right-section p {
+        font-size: 1rem;
+    }
+
+/* تحسين استجابة الكونتينر الأبيض */
+.white-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+    .white-container .form-control {
+        flex: 1;
+        min-width: 150px; /* حتى لا تصغر أكثر من اللازم */
+    }
+
+/* تحسين استجابة الصورة */
+.left-section img {
+    width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+/* تحسين التخطيط للشاشات الصغيرة */
+@media (max-width: 992px) {
+    .right-section {
+        order: 2; /* يجعل النص يظهر قبل الصورة في الهواتف */
+    }
+
+        .right-section img {
+            width: auto;
+        }
+
+    .left-section {
+        order: 1;
+    }
+
+    .white-container {
+        flex-direction: column;
+        gap: 1px;
+    }
+
+        .white-container .form-control {
+            width: 100%;
+        }
+
+        .white-container .btn {
+            width: 100%;
+        }
+}
+
+/* تحسين الزر "حسابي" */
+.navbar-contact .apply-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+}
+
+
+/* تحسين القائمة المنسدلة عند تفعيل زر التبديل */
+@media (max-width: 992px) {
+    .navbar-right-section {
+        flex-direction: column; /* لجعل العناصر متكدسة في الهاتف */
+        align-items: center;
+    }
+
+    .navbar-collapse {
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+        .navbar-nav .nav-item {
+            width: 100%;
+            padding: 10px 0;
+        }
+
+    .navbar-contact {
+        margin-top: 10px; /* إضافة تباعد بين القائمة وزر حسابي */
+    }
+}
+
+
+
+
+
+
+.how-work {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.light {
+    color: #767667;
+    font-size: 16px;
+}
+
+.how-work
+h1 {
+    display: inline-block; /* يجعل الخط بعرض الكلمة فقط */
+    position: relative; /* لتمكين إضافة الخط تحته */
+    font-size: 28px; /* حجم الخط */
+    font-weight: bold; /* جعله عريض */
+    padding-bottom: 10px; /* إضافة مسافة أسفل العنوان */
+}
+
+    .how-work h1::after {
+        content: ""; /* عنصر وهمي لإنشاء الخط */
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 60%; /* تحديد عرض الخط */
+        height: 4px; /* سمك الخط */
+        background-color: #007bff; /* لون الخط */
+        border-radius: 5px; /* جعل الأطراف ناعمة */
+        transform: translateX(-50%); /* توسيط الخط */
+    }
+
+
+
+
+
+.how-ask {
+    margin-top: 155px;
+    text-align: center;
+    background-color: rgba(128, 128, 128, 0.364);
+    width: 100%;
+    padding: 50px 0; /* لإضافة مسافة داخلية */
+}
+
+    .how-ask .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 30px;
+    }
+
+    .how-ask .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+
+.step-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    transition: all 0.4s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+    .step-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.025);
+    }
+
+@media (max-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 80%;
+        max-width: 80%;
+        margin: 0 auto 20px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* جعل القسم يأخذ عرض الشاشة بالكامل */
+.stats-section {
+    width: 100%;
+    padding: 50px 0;
+    background-color: rgba(0, 0, 255, 0.518); /* لون خلفية القسم */
+}
+
+    /* تحسين عرض النصوص */
+    .stats-section .stat-number {
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .stats-section .stat-description {
+        font-size: 1.5rem;
+        color: #06ACEA; /* لون النص الأزرق */
+        margin-bottom: 5px;
+    }
+
+    .stats-section .stat-subtext {
+        font-size: 1.2rem;
+        color: #666;
+    }
+
+/* تحسين استجابة القسم على الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .stats-section .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .stats-section .stat-description {
+        font-size: 1.2rem;
+    }
+
+    .stats-section .stat-subtext {
+        font-size: 1rem;
+    }
+}
+
+
+
+
+
+
+.how-take {
+    /* background-color: #e9f3fb; */
+    text-align: center;
+    min-height: 100vh; /* يجعل السكشن يأخذ على الأقل ارتفاع الشاشة */
+    padding: 0; /* زيادة المسافة العلوية والسفلية */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ضبط المسافة بين العنوان والعناصر */
+h2 {
+    font-size: 28px;
+    color: #191970;
+    margin-bottom: 40px; /* زيادة المسافة أسفل العنوان */
+}
+
+/* جعل المنتجات تتكيف مع جميع الشاشات */
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* ضبط المسافة بين الكروت */
+    max-width: 1200px;
+    margin: auto;
+}
+
+.product-card {
+    flex: 1;
+    min-width: 280px;
+    max-width: 500px;
+    background-color: #b3e5fc;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px; /* توحيد المسافات بين الكروت */
+}
+
+/* ضبط المسافات داخل المنتج */
+.product-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #191970;
+    margin-bottom: 15px; /* تحسين المسافة */
+}
+
+.product-description {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.product-link {
+    color: #0000FF;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+    .product-link:hover {
+        text-decoration: underline;
+    }
+
+.icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+    .icons img {
+        width: 100%;
+        height: 100%;
+    }
+
+/* تحسين قسم الاتصال */
+.contact-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 18px;
+    color: #333;
+    text-align: right;
+}
+
+    .contact-section div {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* جعل التباعد أكبر */
+    }
+
+/* ضبط الزر ليكون متناسقًا */
+.order-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 25px;
+    background-color: #2196F3;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 10px 80px; /* توسيط الزر وإضافة تباعد */
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+    .order-button:hover {
+        background-color: #1976D2;
+    }
+
+/* تحسين الريسبونسيف للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .how-take {
+        padding: 0; /* تقليل البادينج قليلاً للموبايل */
+    }
+
+    .products-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px; /* تقليل المسافة بين المنتجات */
+    }
+
+    .product-card {
+        width: 100%;
+        max-width: 350px; /* جعل المنتجات بنفس الحجم */
+        margin-bottom: 30px; /* توحيد المسافة بين المنتجات */
+    }
+
+    .contact-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+        .contact-section div {
+            flex-direction: column;
+            align-items: center;
+        }
+
+    .order-button {
+        margin-top: 15px;
+    }
+}
+
+.delivery-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    text-align: center;
+}
+
+.delivery-item {
+    display: flex;
+    flex-direction: row; /* جعل العناصر في صف */
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    padding: 20px;
+    border-radius: 15px;
+    gap: 20px;
+    text-align: right; /* محاذاة النص لليمين */
+}
+
+.delivery-img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 10px;
+    order: 1; /* إجبار الصورة أن تكون في البداية (يسار) */
+}
+
+.delivery-content {
+    flex: 1;
+    text-align: center;
+    order: 2;
+}
+
+.location-icon {
+    font-size: 24px;
+    color: #2196F3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 3; /* إجبار الأيقونة أن تكون في النهاية (يمين) */
+}
+
+.delivery-container {
+    display: flex;
+    justify-content: flex-end; /* دفع العناصر إلى اليمين */
+    align-items: center;
+    max-width: 900px;
+    margin: auto;
+    gap: 20px; /* تباعد بين العناصر */
+    text-align: right;
+}
+
+    .delivery-container i {
+        font-size: 24px;
+        color: #2196F3;
+    }
+
+.delivery-content {
+    flex: 1;
+    text-align: center;
+}
+
+.delivery-img2 {
+    max-width: 150px;
+    height: auto;
+    border-radius: 10px;
+    order: 2; /* يجعل الصورة في أقصى اليسار */
+}
+
+
+
+
+.delivery-content h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #191970;
+}
+
+.delivery-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.delivery-center {
+    position: relative;
+    text-align: center;
+}
+
+.water-bottle {
+    width: 150px;
+}
+
+.order-button {
+    display: inline-block;
+    background-color: #2196F3;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    width: fit-content;
+    transition: background-color 0.3s;
+}
+
+    .order-button:hover {
+        background-color: #1976D2;
+    }
+
+.location-icon2 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -30px; /* جعل الأيقونة على اليمين */
+    right: unset;
+}
+
+@media (max-width: 768px) {
+    .delivery-item, .delivery-item2 {
+        flex-direction: row !important; /* إجبار الاتجاه ليبقى كما هو */
+        align-items: center;
+        text-align: right; /* التأكد أن النص يبقى كما هو */
+        gap: 15px;
+    }
+
+    .delivery-content {
+        text-align: right; /* منع التغيير إلى الوسط */
+        padding: 15px;
+    }
+
+    .delivery-img, .delivery-img2 {
+        width: 100px; /* اجعل الحجم متناسقًا */
+        margin-top: 0;
+    }
+
+    .location-icon, .location-icon2 {
+        display: block; /* عدم إخفاء الأيقونات */
+        position: static; /* عدم تغيير موقعها */
+    }
+
+    .water-bottle {
+        width: 150px;
+    }
+}
+
+
+
+
+
+
+
+
+.back-wrapper1 {
+    background: url('imgs/w-delivery-people-bg-opt-scaled-1.jpg') no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    height: 100vh; /* يجعل العنصر يأخذ ارتفاع الشاشة بالكامل */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.background-image2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* لضمان تكديس العناصر عمودياً */
+    text-align: center;
+}
+
+.ppp, .mmm {
+    font-weight: 900;
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 15px; /* تباعد بين الفقرات */
+}
+
+.mmm {
+    font-weight: 300;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+/* تنسيق الأزرار */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* تباعد بين الزرين */
+    margin-top: 20px;
+}
+
+.btn-custom {
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .btn-custom:hover {
+        background-color: #0056b3;
+    }
+
+
+
+
+
+
+
+/*  ✅ القسم الفاصل */
+.separator-section {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0;
+    position: relative;
+}
+
+/* ✅ صندوق البحث الأخضر */
+.search-box {
+    background-color: #5a7c3a; /* اللون الأخضر */
+    width: 70%;
+    max-width: 900px;
+    border-radius: 50px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ صورة الشخص */
+.search-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+/* ✅ محتوى البحث */
+.search-content {
+    color: white;
+    flex: 1;
+    text-align: center;
+}
+
+.search-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.search-subtext {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+/* ✅ صندوق الإدخال */
+.search-input {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+    .search-input input {
+        padding: 10px;
+        border: none;
+        border-radius: 25px;
+        width: 250px;
+        text-align: right;
+    }
+
+    .search-input button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+    }
+
+/* ✅ تحسين استجابة التصميم */
+@media (max-width: 768px) {
+    .search-box {
+        flex-direction: column;
+        text-align: center;
+        border-radius: 20px;
+        padding: 15px;
+    }
+
+    .search-image {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
+    }
+
+    .search-input {
+        flex-direction: column;
+    }
+
+        .search-input input {
+            width: 100%;
+        }
+}
+
+
+/* تحسين استجابة القائمة في الهواتف */
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .floating-navbar {
+        position: absolute; /* لجعل الناف بار يطفو فوق الخلفية */
+        top: 3%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 1200px;
+        z-index: 1000;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 25px 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        display: flex;
+        justify-content: space-between; /* لتوزيع العناصر بين الجانبين */
+        align-items: center;
+        margin-top: -14%;
+    }
+
+    .navbar-nav .nav-item {
+        width: 100%;
+        text-align: center;
+    }
+}
+/* الأجهزة المتوسطة (تابلت أصغر - آيباد) */
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .floating-navbar {
+        top: 2%;
+        width: 95%;
+        padding: 18px 12px;
+        margin-top: -10%;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .navbar-nav .nav-item {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* الهواتف المحمولة */
+@media (max-width: 576px) {
+    .floating-navbar {
+        top: 1%;
+        width: 100%;
+        padding: 15px 10px;
+        border-radius: 0;
+        box-shadow: none;
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+    }
+
+        .navbar-nav .nav-item {
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+        }
+}

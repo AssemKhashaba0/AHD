@@ -1,0 +1,31 @@
+﻿@model Models.Cemetery
+
+@{
+    ViewData["Title"] = "إضافة مقبرة جديدة";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h2>إضافة مقبرة جديدة</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name">اسم المقبرة</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>المدينة</label>
+        <select asp-for="CityId" class="form-control" required>
+            <option value="">اختر المدينة</option>
+            @foreach (var city in ViewBag.Cities)
+            {
+                <option value="@city.Id">@city.Name</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">إضافة</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">إلغاء</a>
+</form>

@@ -1,0 +1,118 @@
+﻿@using Models
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "طلباتي";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h2 class="mb-4 text-center">طلباتي</h2>
+
+@if (!Model.Any())
+{
+    <div class="d-flex flex-column align-items-center justify-content-center mt-5">
+        <i class="fas fa-box-open fa-5x text-secondary mb-3"></i>
+        <p class="text-muted">لم يتم طلب أي منتجات بعد.</p>
+        <a href="/Selection/SelectProducts" class="btn btn-primary">تصفح المنتجات</a>
+    </div>
+}
+else
+{
+    <div class="mb-3">
+        <label for="statusFilter" class="form-label">فلترة حسب الحالة:</label>
+        <select id="statusFilter" class="form-select" onchange="filterOrders()">
+            <option value="">الكل</option>
+            @foreach (OrderStatusEnum status in Enum.GetValues(typeof(OrderStatusEnum)))
+            {
+                <option value="@status">@GetStatusText(status)</option>
+            }
+        </select>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>رقم الطلب</th>
+                <th>اسم المسجد / المقبرة</th>
+                <th>إجمالي السعر</th>
+                <th>طريقة الدفع</th>
+                <th>الحالة</th>
+                <th>الإجراء</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr class="order-row" data-status="@order.OrderStatus">
+                    <td>@order.Id</td>
+                    <td>@(order.Mosque?.Name ?? order.Cemetery?.Name ?? "-")</td>
+                    <td>@order.TotalPrice.ToString("C")</td>
+                    <td>@order.PaymentMethod.ToString()</td>
+                    <td>
+                        <span class="badge @GetStatusClass(order.OrderStatus)">
+                            @GetStatusText(order.OrderStatus)
+                        </span>
+                    </td>
+                    <td>
+                        @if (order.OrderStatus == OrderStatusEnum.New)
+                        {
+                            <form method="post" asp-action="CancelOrder" asp-route-orderId="@order.Id" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">إلغاء</button>
+                            </form>
+                        }
+                        @if (order.OrderStatus != OrderStatusEnum.Completed && order.OrderStatus != OrderStatusEnum.Canceled)
+                        {
+                            <a href="@Url.Action("OrderDetails", "Order", new { id = order.Id })" class="btn btn-primary btn-sm">
+                                تتبع الطلب
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<script>
+    function filterOrders() {
+        var selectedStatus = document.getElementById("statusFilter").value;
+        var rows = document.querySelectorAll(".order-row");
+
+        rows.forEach(row => {
+            if (selectedStatus === "" || row.dataset.status === selectedStatus) {
+                row.style.display = "table-row";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+</script>
+
+@functions {
+    string GetStatusClass(OrderStatusEnum status)
+    {
+        return status switch
+        {
+            OrderStatusEnum.New => "bg-primary",
+            OrderStatusEnum.InProgress => "bg-warning",
+            OrderStatusEnum.InTheWay => "bg-info",
+            OrderStatusEnum.Completed => "bg-success",
+            OrderStatusEnum.Canceled => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusText(OrderStatusEnum status)
+    {
+        return status switch
+        {
+            OrderStatusEnum.New => "جديد",
+            OrderStatusEnum.InProgress => "قيد المعالجة",
+            OrderStatusEnum.InTheWay => "في الطريق",
+            OrderStatusEnum.Completed => "مكتمل",
+            OrderStatusEnum.Canceled => "ملغي",
+            _ => "غير معروف"
+        };
+    }
+}

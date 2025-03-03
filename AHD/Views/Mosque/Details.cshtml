@@ -1,0 +1,37 @@
+﻿@using Models
+@model Mosque
+
+@{
+    ViewData["Title"] = "تفاصيل المسجد";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h1>تفاصيل المسجد</h1>
+
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">الاسم</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+
+        <dt class="col-sm-2">العنوان</dt>
+        <dd class="col-sm-10">@Model.Address</dd>
+
+        <dt class="col-sm-2">خط العرض</dt>
+        <dd class="col-sm-10">@Model.Latitude</dd>
+
+        <dt class="col-sm-2">خط الطول</dt>
+        <dd class="col-sm-10">@Model.Longitude</dd>
+
+        <dt class="col-sm-2">المدينة</dt>
+        <dd class="col-sm-10">@Model.City?.Name</dd>
+
+        
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">تعديل</a>
+    <a asp-action="Index" class="btn btn-secondary">العودة إلى القائمة</a>
+</div>

@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "حالة طلبات موصل الطلبات";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h2>الطلبات التي يجب توصيلها</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>رقم الطلب</th>
+            <th>المستخدم</th>
+            <th>المسجد</th>
+            <th>المقبرة</th>
+            <th>تاريخ الإنشاء</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in ViewBag.OrdersToDeliver)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.User.UserName</td>
+                <td>@order.Mosque?.Name</td>
+                <td>@order.Cemetery?.Name</td>
+                <td>@order.CreatedAt</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>الطلبات التي تم توصيلها</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>رقم الطلب</th>
+            <th>المستخدم</th>
+            <th>المسجد</th>
+            <th>المقبرة</th>
+            <th>تاريخ الإنشاء</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in ViewBag.DeliveredOrders)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.User.UserName</td>
+                <td>@order.Mosque?.Name</td>
+                <td>@order.Cemetery?.Name</td>
+                <td>@order.CreatedAt</td>
+            </tr>
+        }
+    </tbody>
+</table>

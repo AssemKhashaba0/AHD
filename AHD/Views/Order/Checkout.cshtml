@@ -1,0 +1,79 @@
+﻿@model Models.DeliveryLocation
+
+@{
+    ViewData["Title"] = "الدفع";
+    var cartItems = ViewBag.CartItems as List<Models.Cart>; // استرجاع عناصر السلة من ViewBag
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>الدفع</h3>
+                </div>
+                <div class="card-body">
+                    @if (cartItems == null || !cartItems.Any())
+                    {
+                        <div class="alert alert-warning text-center">
+                            <p>السلة فارغة. يرجى إضافة عناصر قبل المتابعة إلى الدفع.</p>
+                            <a href="/Selection/Cart" class="btn btn-primary">العودة إلى السلة</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-action="Checkout" asp-controller="Order" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <!-- حقول العنوان -->
+                            <div class="form-group mb-3">
+                                <label asp-for="City" class="form-label">المدينة</label>
+                                <input asp-for="City" class="form-control" placeholder="أدخل المدينة" required />
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Address" class="form-label">العنوان</label>
+                                <input asp-for="Address" class="form-control" placeholder="أدخل العنوان" required />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Street" class="form-label">الشارع</label>
+                                <input asp-for="Street" class="form-control" placeholder="أدخل الشارع" required />
+                                <span asp-validation-for="Street" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="PhoneNumber" class="form-label">رقم الهاتف</label>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="أدخل رقم الهاتف" required />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="UserId" class="form-label">معرف المستخدم</label>
+                                <input asp-for="UserId" class="form-control" value="@User.Identity.Name" readonly />
+                                <span asp-validation-for="UserId" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">طريقة الدفع:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="PaymentMethod" value="Cash" id="payCash" checked>
+                                    <label class="form-check-label" for="payCash">الدفع عبر كاش (Stripe)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="PaymentMethod" value="OnDelivery" id="payOnDelivery">
+                                    <label class="form-check-label" for="payOnDelivery">الدفع عند الاستلام</label>
+                                </div>
+                            </div>
+                            <!-- زر الإرسال -->
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">إتمام الدفع</button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

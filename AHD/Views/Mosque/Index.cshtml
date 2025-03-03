@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Models.Mosque>
+
+@{
+    ViewData["Title"] = "المساجد";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+}
+
+
+<h1>قائمة المساجد</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">إنشاء مسجد جديد</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>الاسم</th>
+            <th>العنوان</th>
+            <th>خط العرض</th>
+            <th>خط الطول</th>
+            <th>المدينة</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Address</td>
+                <td>@item.Latitude</td>
+                <td>@item.Longitude</td>
+                <td>@item.City?.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">تعديل</a>
+                    <form asp-action="DeleteConfirmed" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('هل أنت متأكد من حذف هذا المسجد؟');">حذف</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

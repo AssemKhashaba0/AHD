@@ -1,0 +1,46 @@
+﻿@model Models.DeliveryLocation
+
+<h2>إدخال بيانات التوصيل</h2>
+
+<form asp-action="Payment" asp-controller="Order" method="post">
+    <div>
+        <label asp-for="City"></label>
+        <input asp-for="City" />
+        <span asp-validation-for="City"></span>
+    </div>
+
+    <div>
+        <label asp-for="Address"></label>
+        <input asp-for="Address" />
+        <span asp-validation-for="Address"></span>
+    </div>
+
+    <div>
+        <label asp-for="Street"></label>
+        <input asp-for="Street" />
+        <span asp-validation-for="Street"></span>
+    </div>
+
+    <div>
+        <label asp-for="AdditionalDetails"></label>
+        <textarea asp-for="AdditionalDetails"></textarea>
+    </div>
+
+    <div>
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" />
+        <span asp-validation-for="PhoneNumber"></span>
+    </div>
+
+    <div>
+        <label asp-for="LocationLink"></label>
+        <input asp-for="LocationLink" />
+        <span asp-validation-for="LocationLink"></span>
+    </div>
+
+    <button type="submit">المتابعة للدفع</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,99 @@
+﻿@model Models.DeliveryLocation
+
+@{
+    ViewData["Title"] = "إضافة عنوان توصيل";
+}
+<Style>
+    /* ملف CSS مخصص */
+    .card {
+        border-radius: 10px;
+    }
+
+    .card-header {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+    }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+</Style>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>إضافة عنوان توصيل</h3>
+                </div>
+                <div class="card-body">
+                    <form  asp-action="AddDeliveryLocation" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- المدينة -->
+                        <div class="form-group mb-3">
+                            <label asp-for="City" class="form-label">المدينة</label>
+                            <input asp-for="City" class="form-control" placeholder="أدخل المدينة" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+
+                        <!-- العنوان -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Address" class="form-label">العنوان</label>
+                            <input asp-for="Address" class="form-control" placeholder="أدخل العنوان" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- الشارع -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Street" class="form-label">الشارع</label>
+                            <input asp-for="Street" class="form-control" placeholder="أدخل الشارع" />
+                            <span asp-validation-for="Street" class="text-danger"></span>
+                        </div>
+
+                        <!-- تفاصيل إضافية -->
+                        <div class="form-group mb-3">
+                            <label asp-for="AdditionalDetails" class="form-label">تفاصيل إضافية</label>
+                            <textarea asp-for="AdditionalDetails" class="form-control" placeholder="أدخل تفاصيل إضافية (اختياري)"></textarea>
+                            <span asp-validation-for="AdditionalDetails" class="text-danger"></span>
+                        </div>
+
+                        <!-- رقم الهاتف -->
+                        <div class="form-group mb-3">
+                            <label asp-for="PhoneNumber" class="form-label">رقم الهاتف</label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="أدخل رقم الهاتف" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <!-- رابط الموقع -->
+                        <div class="form-group mb-3">
+                            <label asp-for="LocationLink" class="form-label">رابط الموقع (اختياري)</label>
+                            <input asp-for="LocationLink" class="form-control" placeholder="أدخل رابط الموقع" />
+                            <span asp-validation-for="LocationLink" class="text-danger"></span>
+                        </div>
+
+                        <!-- زر الإرسال -->
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">حفظ العنوان</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

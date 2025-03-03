@@ -1,0 +1,49 @@
+﻿@model Models.Mosque
+
+@{
+    ViewData["Title"] = "إنشاء مسجد جديد";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h1>إنشاء مسجد جديد</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">اسم المسجد</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label">العنوان</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Latitude" class="control-label">خط العرض</label>
+                <input asp-for="Latitude" class="form-control" />
+                <span asp-validation-for="Latitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Longitude" class="control-label">خط الطول</label>
+                <input asp-for="Longitude" class="form-control" />
+                <span asp-validation-for="Longitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityId" class="control-label">المدينة</label>
+                <select asp-for="CityId" class="form-control" asp-items="ViewBag.Cities">
+                    <option value="">اختر المدينة</option>
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">إنشاء</button>
+                <a asp-action="Index" class="btn btn-secondary">العودة إلى القائمة</a>
+            </div>
+        </form>
+    </div>
+</div>

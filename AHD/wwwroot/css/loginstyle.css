@@ -1,0 +1,107 @@
+/* إعداد الخلفية */
+body {
+    background-image: url('../Home/back.jpg'); /* ضع الصورة في المسار الصحيح */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+}
+
+/* حاوية تسجيل الدخول */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* المحاذاة لبداية الفورم */
+    padding: 50px 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* الفورم */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* المحاذاة لليمين */
+    width: 100%;
+}
+
+/* حاوية الإدخال */
+.input-container {
+    position: relative;
+    width: 100%;
+    margin: 15px 0;
+}
+
+.input-container input {
+    width: 90%;
+    padding: 15px;
+    padding-right: 40px; /* تباعد للأيقونة */
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    background: white;
+    text-align: right;
+    font-weight: bold;
+    color: #3a95d4;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-container input::placeholder {
+    color: #3a95d4;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* أيقونات الإدخال */
+.input-container i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #3a95d4;
+}
+
+/* زر تسجيل الدخول */
+button {
+    width: auto;
+    padding: 12px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* تباعد بين الأيقونة والنص */
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+button i {
+    font-size: 18px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* رابط نسيان كلمة المرور */
+.forgot-password {
+    text-decoration: none;
+    color: #3a95d4;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+

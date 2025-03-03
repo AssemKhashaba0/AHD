@@ -1,0 +1,68 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب</title>
+    <link rel="stylesheet" href="~/css/registerstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="register-container">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="register-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="input-container">
+                <i class="fa-solid fa-user"></i>
+                <input asp-for="Input.Name" type="text" placeholder="الاسم بالكامل" required>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+
+            <div class="input-container">
+                <i class="fa-solid fa-envelope"></i>
+                <input asp-for="Input.Email" type="email" placeholder="الايميل" required>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="input-container">
+                <i class="fa-solid fa-phone"></i>
+                <input asp-for="Input.PhoneNumber" type="tel" placeholder="رقم الهاتف" required>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="input-container">
+                <i class="fa-solid fa-lock"></i>
+                <input asp-for="Input.Password" type="password" placeholder="الباسورد" required>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="input-container">
+                <i class="fa-solid fa-lock"></i>
+                <input asp-for="Input.ConfirmPassword" type="password" placeholder="تأكيد الباسورد" required>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="tasgeel">
+                <button id="registerSubmit" type="submit">
+                    <i class="fa-solid fa-user-plus"></i> إنشاء حساب
+                </button>
+                <a href="/Identity/Account/login">تسجيل الدخول</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

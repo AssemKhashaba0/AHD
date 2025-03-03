@@ -1,0 +1,69 @@
+﻿@model List<Models.Order>
+
+@{
+    ViewData["Title"] = "الطلبات خلال آخر 24 ساعة";
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+}
+
+<h2 class="text-center my-4">الطلبات خلال آخر 24 ساعة</h2>
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>#</th>
+            <th>المستخدم</th>
+            <th>المسجد / المقبرة</th>
+            <th>نوع الطلب</th>
+            <th>حالة الطلب</th>
+            <th>طريقة الدفع</th>
+            <th>السعر الإجمالي</th>
+            <th>تاريخ الإنشاء</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var order in Model.Select((value, index) => new { value, index }))
+            {
+                <tr>
+                    <td>@(order.index + 1)</td>
+                    <td>@order.value.User.Name</td>
+                    <td>
+                        @(order.value.Mosque != null ? order.value.Mosque.Name : order.value.Cemetery?.Name ?? "-")
+                    </td>
+                    <td>@order.value.OrderType.ToString()</td>
+                    <td>
+                        <span class="badge @(GetStatusClass(order.value.OrderStatus))">
+                            @order.value.OrderStatus.ToString()
+                        </span>
+                    </td>
+                    <td>@order.value.PaymentMethod.ToString()</td>
+                    <td>@order.value.TotalPrice.ToString("C")</td>
+                    <td>@order.value.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center text-danger">لا توجد طلبات خلال آخر 24 ساعة</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@functions {
+    string GetStatusClass(Models.OrderStatusEnum status)
+    {
+        return status switch
+        {
+            Models.OrderStatusEnum.New => "badge-primary",
+            Models.OrderStatusEnum.InProgress => "badge-warning",
+            Models.OrderStatusEnum.InTheWay => "badge-info",
+            Models.OrderStatusEnum.Completed => "badge-success",
+            Models.OrderStatusEnum.Canceled => "badge-danger",
+            _ => "badge-secondary"
+        };
+    }
+}

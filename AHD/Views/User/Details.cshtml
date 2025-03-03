@@ -1,0 +1,82 @@
+﻿@using Models
+@model Utility.ViewModel.UserDetailsViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+   
+    Layout = "~/Views/_LayoutDashbord.cshtml";
+
+
+}
+
+<h2 class="mb-4 text-primary"><i class="fas fa-user-circle"></i> تفاصيل المستخدم</h2>
+
+<div class="card shadow-lg">
+    <div class="card-body">
+        <h5 class="card-title text-dark"><i class="fas fa-user"></i> @Model.User.Name</h5>
+        <p class="card-text"><i class="fas fa-envelope text-secondary"></i> @Model.User.Email</p>
+        <p class="card-text"><i class="fas fa-phone text-success"></i> @Model.User.PhoneNumber</p>
+        <p class="card-text"><i class="fas fa-calendar-alt text-info"></i> تاريخ الإنشاء: @Model.User.CreatedAt.ToString("yyyy-MM-dd")</p>
+        <a asp-action="Index" class="btn btn-secondary mt-2"><i class="fas fa-arrow-left"></i> العودة إلى المستخدمين</a>
+    </div>
+</div>
+
+<h3 class="mt-5 text-primary"><i class="fas fa-box"></i> الطلبات</h3>
+
+@if (Model.Orders.Any())
+{
+    <table class="table table-hover table-bordered text-center mt-3">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>نوع الطلب</th>
+                <th>الحالة</th>
+                <th>طريقة الدفع</th>
+                <th>السعر</th>
+                <th>التاريخ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders.Select((order, index) => new { order, index }))
+            {
+                <tr>
+                    <td>@(order.index + 1)</td>
+                    <td>
+                        <i class="@(order.order.OrderType switch
+                        {
+                            OrderTypeEnum.OneTime => "fas fa-shopping-bag",
+                            OrderTypeEnum.Daily => "fas fa-calendar-day",
+                            OrderTypeEnum.Weekly => "fas fa-calendar-week",
+                            OrderTypeEnum.Monthly => "fas fa-calendar-alt",
+                            _ => "fas fa-cogs"
+                        })"></i>
+                        @order.order.OrderType.ToString()
+                    </td>
+                    <td>
+                        <span class="badge @(order.order.OrderStatus switch
+                        {
+                            OrderStatusEnum.New => "badge-primary",
+                            OrderStatusEnum.InProgress => "badge-warning",
+                            OrderStatusEnum.Completed => "badge-success",
+                            _ => "badge-danger"
+                        })">
+                            @order.order.OrderStatus.ToString()
+                        </span>
+                    </td>
+                    <td>
+                        <i class="@(order.order.PaymentMethod == PaymentMethodEnum.Cash ? "fas fa-money-bill-wave text-success" : "fas fa-truck text-warning")"></i>
+                        @order.order.PaymentMethod.ToString()
+                    </td>
+                    <td>@order.order.TotalPrice.ToString("C")</td>
+                    <td>@order.order.CreatedAt.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info mt-3">
+        <i class="fas fa-info-circle"></i> لا يوجد طلبات حتى الآن.
+    </div>
+}

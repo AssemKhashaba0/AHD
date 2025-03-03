@@ -1,0 +1,53 @@
+﻿@page
+@model LockoutModel
+@{
+    ViewData["Title"] = "الحساب محظور";
+}
+
+<style>
+    body {
+        background: linear-gradient(to right, #ff416c, #ff4b2b);
+        color: white;
+        font-family: 'Tajawal', sans-serif;
+    }
+
+    .lockout-container {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+    }
+
+    .lockout-icon {
+        font-size: 6rem;
+        color: #fff;
+    }
+
+    .btn-custom {
+        background: white;
+        color: #ff416c;
+        border-radius: 30px;
+        padding: 10px 25px;
+        font-weight: bold;
+    }
+
+        .btn-custom:hover {
+            background: #ff4b2b;
+            color: white;
+        }
+</style>
+
+<div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+    <div class="lockout-container">
+        <i class="fas fa-lock lockout-icon mb-3"></i>
+        <h1>@ViewData["Title"]</h1>
+        <p class="lead">تم حظر حسابك بسبب محاولات تسجيل دخول فاشلة متعددة أو إجراء إداري.</p>
+        <p>يرجى المحاولة مرة أخرى لاحقًا أو التواصل مع الدعم إذا كنت تعتقد أن هناك خطأ.</p>
+        <a href="/" class="btn btn-custom mt-3"><i class="fas fa-home"></i> العودة إلى الصفحة الرئيسية</a>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
